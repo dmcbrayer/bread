@@ -23,6 +23,7 @@ defmodule BreadWeb do
 
       import Plug.Conn
       import BreadWeb.Gettext
+      import Phoenix.LiveView.Controller
       alias BreadWeb.Router.Helpers, as: Routes
     end
   end
@@ -41,6 +42,7 @@ defmodule BreadWeb do
 
       import BreadWeb.ErrorHelpers
       import BreadWeb.Gettext
+      import Phoenix.LiveView.Helpers
       alias BreadWeb.Router.Helpers, as: Routes
     end
   end
@@ -50,6 +52,7 @@ defmodule BreadWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
+      import Phoenix.LiveView.Router
     end
   end
 

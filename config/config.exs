@@ -16,7 +16,7 @@ config :bread, BreadWeb.Endpoint,
   secret_key_base: "BLBvvQTPKEpu/zCOzEMOjP1IcUXbC7KSzTlgpC5ZW80/D39Th5n96UG/REX/wgc1",
   render_errors: [view: BreadWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Bread.PubSub, adapter: Phoenix.PubSub.PG2],
-  live_view: [signing_salt: "G9Cwslv5"]
+  live_view: [signing_salt: "5EMj+TTk0RIPRh+T3NCqOa2eousCW++2"]
 
 # Configures Elixir's Logger
 config :logger, :console,
