@@ -25,6 +25,7 @@ defmodule BreadWeb.BreadLive do
   def handle_event("add_ingredient", _params, socket) do
     IO.puts("Add Ingredient")
     starting_changeset = socket.assigns.changeset
+    IO.inspect(socket.assigns)
 
     changeset =
       starting_changeset
