@@ -2,7 +2,7 @@ defmodule BreadWeb.BreadLive do
   use Phoenix.LiveView
   alias Bread.{Recipe,Ingredient}
 
-  def mount(_session, socket) do
+  def mount(_params, _session, socket) do
     changeset =
       Recipe.changeset(%Recipe{}, %{ingredients: [%{}], steps: [%{}]})
 
@@ -25,8 +25,6 @@ defmodule BreadWeb.BreadLive do
   end
 
   def handle_event("add_ingredient", _params, socket) do
-    IO.puts("Add Ingredient")
-
     starting_changeset = socket.assigns.changeset
     ingredients =
       starting_changeset.changes.ingredients ++ [%Ingredient{}]
@@ -38,12 +36,14 @@ defmodule BreadWeb.BreadLive do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  # @TODO handle it if the user tries to remove the last ingredient
   def handle_event("remove_ingredient", %{"idx" => idx}, socket) do
-    IO.puts("Remove ingredient")
-
     starting_changeset = socket.assigns.changeset
-    ingredients = List.delete_at(starting_changeset.changes.ingredients, String.to_integer(idx))
+
+    ingredients =
+      case Enum.count(starting_changeset.changes.ingredients) do
+        1 -> starting_changeset.changes.ingredients
+        _ -> List.delete_at(starting_changeset.changes.ingredients, String.to_integer(idx))
+      end
 
     changeset =
       starting_changeset
@@ -58,8 +58,6 @@ defmodule BreadWeb.BreadLive do
   end
 
   def handle_event("add_step", _params, socket) do
-    IO.puts("Remove step")
-
     starting_cs = socket.assigns.changeset
     steps = starting_cs.changes.steps ++ [%Recipe.RecipeStep{}]
 
@@ -71,10 +69,12 @@ defmodule BreadWeb.BreadLive do
   end
 
   def handle_event("remove_step", %{"idx" => idx}, socket) do
-    IO.puts("Remove step")
-
     starting_cs = socket.assigns.changeset
-    steps = List.delete_at(starting_cs.changes.steps, String.to_integer(idx))
+    steps =
+      case Enum.count(starting_cs.changes.steps) do
+        1 -> starting_cs.changes.steps
+        _ -> List.delete_at(starting_cs.changes.steps, String.to_integer(idx))
+      end
 
     changeset =
       starting_cs
