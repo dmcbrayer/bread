@@ -1,10 +1,10 @@
 defmodule BreadWeb.Router do
   use BreadWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
     plug :fetch_live_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
@@ -17,8 +17,8 @@ defmodule BreadWeb.Router do
   scope "/", BreadWeb do
     pipe_through :browser
 
-    live "/", BreadLive
-    # get "/", PageController, :index
+    get "/", PageController, :index
+    live "/form", BreadLive.RecipeForm
   end
 
   # Other scopes may use custom stacks.

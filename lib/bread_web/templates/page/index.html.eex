@@ -1,3 +1,5 @@
 <section>
   <h1>Bread App</h1>
+
+  <%= link "New Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "underline text-blue-600" %>
 </section>
