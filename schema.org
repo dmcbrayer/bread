@@ -1,0 +1,22 @@
+* Users
+** Users
+*** email:string
+*** name:string 
+*** password_hash:string
+*** is_admin:boolean
+
+* Recipes
+** Recipes
+*** name:string
+*** starter:string
+*** user_id:integer
+
+** Ingredients
+*** name:string
+*** amount:integer
+*** recipe_id:integer
+
+** RecipeSteps
+*** recipe_id:integer
+*** order:integer 
+*** body:text
