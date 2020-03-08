@@ -1,6 +1,6 @@
 <div class="container">
    <div class="w-full m-auto max-w-lg mt-4">
-     <h1 class="text-4xl">Bread Live</h1>
+     <h1 class="text-4xl">Bread Live (Recipe)</h1>
 
      <%= f = form_for @changeset, "#", [phx_change: :validate, phx_submit: :save, class: "bg-white border border-4 border-gray-400 rounded px-8 py-8 mb-4"] %>
        <div class="mb-4">
@@ -54,6 +54,9 @@
        </div>
 
        <%= submit "Save", class: "my-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" %>
+
+       <%= link "Back", to: Routes.page_path(@socket, :index), class: "underline text-blue-600 block"%>
      </form>
+
   </div>
 </div>

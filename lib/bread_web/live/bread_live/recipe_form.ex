@@ -1,5 +1,6 @@
-defmodule BreadWeb.BreadLive do
+defmodule BreadWeb.BreadLive.RecipeForm do
   use Phoenix.LiveView
+  alias BreadWeb.Router.Helpers, as: Routes
   alias Bread.{Recipe,Ingredient}
 
   def mount(_params, _session, socket) do
@@ -10,7 +11,7 @@ defmodule BreadWeb.BreadLive do
   end
 
   def render(assigns) do
-    Phoenix.View.render(BreadWeb.PageView, "home.html", assigns)
+    Phoenix.View.render(BreadWeb.RecipeView, "form.html", assigns)
   end
 
   def handle_event("validate", %{"recipe" => params}, socket) do
@@ -52,9 +53,19 @@ defmodule BreadWeb.BreadLive do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", params, socket) do
+  def handle_event("save", %{"recipe" => params}, socket) do
     IO.inspect(params)
-    {:noreply, socket}
+
+    case Enum.random([true, false]) do
+      true ->
+        {:noreply,
+          socket
+          |> put_flash(:info, "Recipe successfully saved")
+          |> redirect(to: Routes.page_path(BreadWeb.Endpoint, :index))
+        }
+      false ->
+        {:noreply, socket}
+    end
   end
 
   def handle_event("add_step", _params, socket) do
