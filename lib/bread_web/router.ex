@@ -1,5 +1,6 @@
 defmodule BreadWeb.Router do
   use BreadWeb, :router
+  use Pow.Phoenix.Router
   import Phoenix.LiveView.Router
 
   pipeline :browser do
@@ -14,11 +15,21 @@ defmodule BreadWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
   scope "/", BreadWeb do
     pipe_through :browser
 
     get "/", PageController, :index
     live "/form", BreadLive.RecipeForm
+  end
+
+  scope "/" do
+    pipe_through :browser
+    pow_routes()
   end
 
   # Other scopes may use custom stacks.
