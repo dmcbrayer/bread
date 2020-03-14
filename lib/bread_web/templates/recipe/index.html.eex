@@ -1,0 +1,8 @@
+<h1>This is an index for recipes</h1>
+
+<%= for recipe <- @recipes do %>
+  <ul>
+    <li><%= recipe.id %></li>
+    <li><%= recipe.name %></li>
+  </ul>
+<% end %>

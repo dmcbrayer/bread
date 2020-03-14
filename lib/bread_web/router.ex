@@ -25,6 +25,8 @@ defmodule BreadWeb.Router do
 
     get "/", PageController, :index
     live "/form", BreadLive.RecipeForm
+
+    resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
   end
 
   scope "/" do
