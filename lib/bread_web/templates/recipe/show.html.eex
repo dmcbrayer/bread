@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="w-full m-auto max-w-xl mt-4">
+    <h1 class="text-4xl"><%= @recipe.name %></h1>
+
+    <h3 class="text-2xl my-4">Ingredients</h3>
+    <div class="bg-gray-200 align-middle inline-block min-w-full overflow-hidden sm:rounded-lg border-2 border-gray-200">
+      <table class="min-w-full">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Amount (%) </th>
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Name</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <%= for ingredient <- @recipe.ingredients do %>
+            <tr>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= ingredient.amount %></td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= ingredient.name %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="text-2xl my-4">Steps</h3>
+    <div class="bg-gray-200 align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+      <table class="min-w-full">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Step</th>
+            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Content</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white">
+          <%= for {recipe_step, index} <- Enum.with_index(@recipe.recipe_steps) do %>
+            <tr>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= index + 1 %></td>
+              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe_step.body %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

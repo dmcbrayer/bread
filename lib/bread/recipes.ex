@@ -35,7 +35,10 @@ defmodule Bread.Recipes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_recipe!(id), do: Repo.get!(Recipe, id)
+  def get_recipe!(id) do
+    Repo.get!(Recipe, id)
+    |> Repo.preload([:ingredients, :recipe_steps])
+  end
 
   @doc """
   Creates a recipe.
