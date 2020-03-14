@@ -2,6 +2,10 @@
   <div class="w-full m-auto max-w-xl mt-4">
     <h1 class="text-4xl">Your Recipes</h1>
 
+    <div class="my-4">
+      <%= link "New Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "text-white font-bold py-2 px-4 rounded cursor-pointer bg-teal-500 hover:bg-teal-600 my-4" %>
+    </div>
+
     <div class="bg-gray-200 align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
       <table class="min-w-full">
         <thead>
@@ -17,9 +21,9 @@
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe.id %></td>
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe.name %></td>
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600">
-                <%= link 'View', to: Routes.recipe_path(@conn, :show, recipe), class: "underline text-blue-400" %>
-                <%= link 'Edit', to: Routes.live_path(@conn, BreadWeb.BreadLive.EditRecipeForm, recipe.id), class: "ml-2 underline text-blue-400" %>
-                <%= link "Delete", to: Routes.recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "ml-2 underline text-blue-400" %>
+                <%= link 'View', to: Routes.recipe_path(@conn, :show, recipe), class: "underline text-blue-400 hover:text-blue-500" %>
+                <%= link 'Edit', to: Routes.live_path(@conn, BreadWeb.BreadLive.EditRecipeForm, recipe.id), class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
+                <%= link "Delete", to: Routes.recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
               </td>
 
             </tr>

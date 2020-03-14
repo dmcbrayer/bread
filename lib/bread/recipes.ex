@@ -18,7 +18,9 @@ defmodule Bread.Recipes do
 
   """
   def list_recipes do
-    Repo.all(Recipe)
+    Recipe
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
   end
 
   @doc """
