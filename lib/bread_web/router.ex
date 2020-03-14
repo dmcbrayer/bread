@@ -28,6 +28,8 @@ defmodule BreadWeb.Router do
     live "/form", BreadLive.RecipeForm
 
     resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
+
+    live "/recipes/:id/edit", BreadLive.EditRecipeForm
   end
 
   scope "/" do

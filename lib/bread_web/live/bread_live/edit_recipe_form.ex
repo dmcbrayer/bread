@@ -1,4 +1,4 @@
-defmodule BreadWeb.BreadLive.RecipeForm do
+defmodule BreadWeb.BreadLive.EditRecipeForm do
   use Phoenix.LiveView
   alias BreadWeb.Router.Helpers, as: Routes
   alias Bread.Recipes
@@ -9,12 +9,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     changeset =
       Recipes.change_recipe(recipe)
 
-    {:ok, assign(socket, changeset: changeset)}
-  end
-
-  def mount(_params, _session, socket) do
-    changeset =
-      Recipes.change_recipe(%Recipe{}, %{ingredients: [%{}], recipe_steps: [%{}]})
+    socket =
+      socket
+      |> assign(:changeset, changeset)
+      |> assign(:recipe, recipe)
 
     {:ok, assign(socket, changeset: changeset)}
   end
@@ -23,19 +21,19 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     Phoenix.View.render(BreadWeb.RecipeView, "form.html", assigns)
   end
 
-  def handle_event("validate", %{"recipe" => params}, socket) do
+  def handle_event("validate", %{"recipe" => params}, %{assigns: %{recipe: recipe }} = socket) do
     IO.inspect(params)
 
     changeset =
-      %Recipe{}
+      recipe
       |> Recipes.change_recipe(params)
-      |> Map.put(:action, :insert)
+      |> Map.put(:action, :update)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", %{"recipe" => params}, socket) do
-    case Recipes.create_recipe(params) do
+  def handle_event("save", %{"recipe" => params}, %{assigns: %{recipe: recipe}} = socket) do
+    case Recipes.update_recipe(recipe, params) do
       {:ok, recipe} ->
         {:noreply,
           socket
