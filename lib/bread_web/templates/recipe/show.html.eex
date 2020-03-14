@@ -23,7 +23,7 @@
     </div>
 
     <h3 class="text-2xl my-4">Steps</h3>
-    <div class="bg-gray-200 align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+    <div class="bg-gray-200 align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200 mb-10">
       <table class="min-w-full">
         <thead>
           <tr>
@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody class="bg-white">
-          <%= for {recipe_step, index} <- Enum.with_index(@recipe.recipe_steps) do %>
+          <%= for {recipe_step, index} <- ordered_recipe_steps(@recipe.recipe_steps) do %>
             <tr>
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= index + 1 %></td>
               <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe_step.body %></td>
