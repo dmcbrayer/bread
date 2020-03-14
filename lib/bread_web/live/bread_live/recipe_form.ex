@@ -1,11 +1,12 @@
 defmodule BreadWeb.BreadLive.RecipeForm do
   use Phoenix.LiveView
   alias BreadWeb.Router.Helpers, as: Routes
-  alias Bread.{Recipe,Ingredient}
+  alias Bread.Recipes
+  alias Bread.Recipes.{Recipe,Ingredient,RecipeStep}
 
   def mount(_params, _session, socket) do
     changeset =
-      Recipe.changeset(%Recipe{}, %{ingredients: [%{}], steps: [%{}]})
+      Recipes.change_recipe(%Recipe{}, %{ingredients: [%{}], recipe_steps: [%{}]})
 
     {:ok, assign(socket, changeset: changeset)}
   end
@@ -19,11 +20,26 @@ defmodule BreadWeb.BreadLive.RecipeForm do
 
     changeset =
       %Recipe{}
-      |> Recipe.changeset(params)
+      |> Recipes.change_recipe(params)
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
   end
+
+  def handle_event("save", %{"recipe" => params}, socket) do
+    case Recipes.create_recipe(params) do
+      {:ok, recipe} ->
+        {:noreply,
+          socket
+          |> put_flash(:info, "Recipe successfully saved")
+          |> redirect(to: Routes.page_path(BreadWeb.Endpoint, :index))
+        }
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
+  end
+
 
   def handle_event("add_ingredient", _params, socket) do
     starting_changeset = socket.assigns.changeset
@@ -53,24 +69,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", %{"recipe" => params}, socket) do
-    IO.inspect(params)
-
-    case Enum.random([true, false]) do
-      true ->
-        {:noreply,
-          socket
-          |> put_flash(:info, "Recipe successfully saved")
-          |> redirect(to: Routes.page_path(BreadWeb.Endpoint, :index))
-        }
-      false ->
-        {:noreply, socket}
-    end
-  end
 
   def handle_event("add_step", _params, socket) do
     starting_cs = socket.assigns.changeset
-    steps = starting_cs.changes.steps ++ [%Recipe.RecipeStep{}]
+    steps = starting_cs.changes.recipe_steps ++ [%RecipeStep{}]
 
     changeset =
       starting_cs
@@ -82,9 +84,9 @@ defmodule BreadWeb.BreadLive.RecipeForm do
   def handle_event("remove_step", %{"idx" => idx}, socket) do
     starting_cs = socket.assigns.changeset
     steps =
-      case Enum.count(starting_cs.changes.steps) do
-        1 -> starting_cs.changes.steps
-        _ -> List.delete_at(starting_cs.changes.steps, String.to_integer(idx))
+      case Enum.count(starting_cs.changes.recipe_steps) do
+        1 -> starting_cs.changes.recipe_steps
+        _ -> List.delete_at(starting_cs.changes.recipe_steps, String.to_integer(idx))
       end
 
     changeset =
@@ -101,6 +103,6 @@ defmodule BreadWeb.BreadLive.RecipeForm do
 
   defp update_steps(changeset, steps) do
     changeset
-    |> Ecto.Changeset.change(%{steps: steps})
+    |> Ecto.Changeset.change(%{recipe_steps: steps})
   end
 end

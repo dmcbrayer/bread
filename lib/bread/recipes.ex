@@ -98,8 +98,8 @@ defmodule Bread.Recipes do
       %Ecto.Changeset{source: %Recipe{}}
 
   """
-  def change_recipe(%Recipe{} = recipe) do
-    Recipe.changeset(recipe, %{})
+  def change_recipe(%Recipe{} = recipe, attrs \\ %{}) do
+    Recipe.changeset(recipe, attrs)
   end
 
   alias Bread.Recipes.Ingredient

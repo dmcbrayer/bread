@@ -15,6 +15,6 @@ defmodule Bread.Recipes.RecipeStep do
   def changeset(recipe_step, attrs) do
     recipe_step
     |> cast(attrs, [:order, :body])
-    |> validate_required([:order, :body])
+    |> validate_required([:body])
   end
 end

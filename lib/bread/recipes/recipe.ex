@@ -4,6 +4,7 @@ defmodule Bread.Recipes.Recipe do
   alias Bread.Users.User
   alias Bread.Recipes.{Ingredient,RecipeStep}
 
+  @starters ["none", "pate fermentee", "poolish", "levain"]
   schema "recipes" do
     field :name, :string
     field :starter, :string
@@ -19,5 +20,9 @@ defmodule Bread.Recipes.Recipe do
     recipe
     |> cast(attrs, [:name, :starter, :user_id])
     |> validate_required([:name, :starter])
+    |> validate_inclusion(:starter, @starters)
+    |> cast_assoc(:ingredients, with: &Ingredient.changeset/2)
+
+    |> cast_assoc(:recipe_steps, with: &RecipeStep.changeset/2)
   end
 end
