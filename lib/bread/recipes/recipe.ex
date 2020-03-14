@@ -25,4 +25,8 @@ defmodule Bread.Recipes.Recipe do
 
     |> cast_assoc(:recipe_steps, with: &RecipeStep.changeset/2)
   end
+
+  def starters do
+    @starters
+  end
 end
