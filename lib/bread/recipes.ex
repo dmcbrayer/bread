@@ -23,6 +23,13 @@ defmodule Bread.Recipes do
     |> Repo.all()
   end
 
+  def list_user_recipes(user) do
+    Recipe
+    |> where(user_id: ^user.id)
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single recipe.
 
