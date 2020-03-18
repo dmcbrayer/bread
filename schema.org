@@ -20,3 +20,16 @@
 *** recipe_id:integer
 *** order:integer 
 *** body:text
+* Bakes
+** Bake
+*** recipe_id:integer
+*** status:string (starting, mixing, proofing, baking, done)
+*** baked_on:date
+*** loaf_type:string
+*** num_loaves:integer
+*** dough_amount:integer (in grams, calculated based on loaf_type and num_loaves)
+*** bake_temp:integer
+*** ambient_temp:float
+*** ambient_humidity:float
+*** rating:integer
+*** notes:text
