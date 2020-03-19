@@ -1,0 +1,37 @@
+FROM elixir:1.10.2-alpine
+
+# install build dependencies
+RUN apk add --update git build-base nodejs yarn python
+
+# prepare build dir
+RUN mkdir /app
+WORKDIR /app
+
+# install hex + rebar
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
+# set build ENV
+ENV MIX_ENV=prod
+ENV DATABASE_URL=ecto://postgres:postgres@localhost/bread_prod
+ENV SECRET_KEY_BASE=uaFFrY6rg0f57Paltl2eajD60czu3Qor5cnjAHWuN/QoGvcBGLkMMYmKWfP/gdn4
+
+# install mix dependencies
+COPY mix.exs mix.lock ./
+COPY config config
+RUN mix deps.get
+RUN mix deps.compile
+
+# build assets
+COPY assets assets
+COPY priv priv
+RUN yarn --cwd assets install
+RUN yarn --cwd assets run deploy
+RUN mix phx.digest
+
+# build project
+COPY lib lib
+RUN mix compile
+
+# build release (uncomment COPY if rel/ exists)
+CMD ["mix","release"]
