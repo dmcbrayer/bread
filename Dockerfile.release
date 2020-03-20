@@ -17,9 +17,6 @@ RUN apt-get update -q \
     unixodbc-dev \
  && apt-get clean
 
-# install asdf and its plugins
-# ASDF will only correctly install plugins into the home directory as of 0.7.5
-# so .... Just go with it.
 ENV ASDF_ROOT /root/.asdf
 ENV PATH "${ASDF_ROOT}/bin:${ASDF_ROOT}/shims:$PATH"
 
@@ -49,8 +46,6 @@ RUN mix local.hex --force && \
 
 # set build ENV
 ENV MIX_ENV=prod
-ENV DATABASE_URL=ecto://postgres:postgres@localhost/bread_prod
-ENV SECRET_KEY_BASE=uaFFrY6rg0f57Paltl2eajD60czu3Qor5cnjAHWuN/QoGvcBGLkMMYmKWfP/gdn4
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
@@ -61,7 +56,7 @@ RUN mix deps.compile
 # build assets
 COPY assets assets
 COPY priv priv
-RUN cd assets && npm install && npm run deploy
+RUN npm install --prefix ./assets && npm run deploy --prefix ./assets
 RUN mix phx.digest
 
 # build project
