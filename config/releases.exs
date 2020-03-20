@@ -24,12 +24,15 @@ secret_key_base =
     """
 
 config :bread, BreadWeb.Endpoint,
+  url: [host: "localhost", port: 4000],
   http: [
     port: String.to_integer(System.get_env("PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
   ],
   server: true,
-  secret_key_base: secret_key_base
+  secret_key_base: secret_key_base,
+  check_origin: ["//bread.roundtabledev.com"]
+
 
 # ## Using releases (Elixir v1.9+)
 #
