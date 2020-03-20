@@ -15,6 +15,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04
   * https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
   * https://medium.com/3-elm-erlang-elixir/how-to-deploying-phoenix-application-on-ubuntu-293645f38145
+  * https://blog.carbonfive.com/2020/02/04/cross-platform-elixir-releases-with-docker/
 
 ## Learn more
 
