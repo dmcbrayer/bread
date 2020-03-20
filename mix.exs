@@ -45,7 +45,8 @@ defmodule Bread.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:phoenix_live_view, "~> 0.9.0"},
       {:floki, ">= 0.0.0", only: :test},
-      {:pow, "~> 1.0.18"}
+      {:pow, "~> 1.0.18"},
+      {:observer_cli, "~> 1.5"}
     ]
   end
 
