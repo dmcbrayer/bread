@@ -10,7 +10,9 @@ release:
 	docker run -it --rm -v $(PWD)/_build:/app/_build $(DOCKER_TAG)
 
 deploy: ## Deploy the thing
-	rsync -aP _build/prod $(DEPLOY_TARGET):$(DEPLOY_DIR)
-	echo $(PASS) | ssh -tt $(DEPLOY_TARGET) sudo systemctl restart $(DEPLOY_SERVICE)
+	ssh $(DEPLOY_TARGET) sudo systemctl stop $(DEPLOY_SERVICE)
+	rsync -avP _build/prod $(DEPLOY_TARGET):$(DEPLOY_DIR)
+	ssh $(DEPLOY_TARGET) '$(DEPLOY_DIR)/prod/rel/bread/bin/bread eval "Bread.Release.migrate"'
+	ssh $(DEPLOY_TARGET) sudo systemctl start $(DEPLOY_SERVICE)
 
 all: build release deploy
