@@ -25,11 +25,16 @@ defmodule BreadWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    live "/form", BreadLive.RecipeForm
 
-    resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
+    scope "/" do
+      pipe_through :protected
 
-    live "/recipes/:id/edit", BreadLive.EditRecipeForm
+      live "/form", BreadLive.RecipeForm, session: {__MODULE__, :with_current_user, []}
+
+      resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
+
+      live "/recipes/:id/edit", BreadLive.EditRecipeForm
+    end
   end
 
   scope "/" do
@@ -41,4 +46,8 @@ defmodule BreadWeb.Router do
   # scope "/api", BreadWeb do
   #   pipe_through :api
   # end
+
+  def with_current_user(conn) do
+    %{"current_user" => Pow.Plug.current_user(conn)}
+  end
 end

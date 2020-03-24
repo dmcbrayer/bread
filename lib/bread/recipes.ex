@@ -7,6 +7,7 @@ defmodule Bread.Recipes do
   alias Bread.Repo
 
   alias Bread.Recipes.Recipe
+  alias Bread.Recipes.RecipeQueries
 
   @doc """
   Returns the list of recipes.
@@ -25,7 +26,7 @@ defmodule Bread.Recipes do
 
   def list_user_recipes(user) do
     Recipe
-    |> where(user_id: ^user.id)
+    |> RecipeQueries.by_user(user)
     |> order_by(desc: :inserted_at)
     |> Repo.all()
   end

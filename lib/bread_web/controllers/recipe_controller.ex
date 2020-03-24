@@ -4,7 +4,7 @@ defmodule BreadWeb.RecipeController do
   alias Bread.Recipes
 
   def index(conn, _params) do
-    recipes = Recipes.list_recipes()
+    recipes = Recipes.list_user_recipes(Pow.Plug.current_user(conn))
     render(conn, "index.html", recipes: recipes)
   end
 
