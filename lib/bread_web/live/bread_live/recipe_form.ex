@@ -4,19 +4,11 @@ defmodule BreadWeb.BreadLive.RecipeForm do
   alias Bread.Recipes
   alias Bread.Recipes.{Recipe,Ingredient,RecipeStep}
 
-  def mount(%{"id" => recipe_id}, _session, socket) do
-    recipe = Recipes.get_recipe!(recipe_id)
-    changeset =
-      Recipes.change_recipe(recipe)
-
-    {:ok, assign(socket, changeset: changeset)}
-  end
-
-  def mount(_params, _session, socket) do
+  def mount(_params, %{"current_user" => current_user}, socket) do
     changeset =
       Recipes.change_recipe(%Recipe{}, %{ingredients: [%{}], recipe_steps: [%{}]})
 
-    {:ok, assign(socket, changeset: changeset)}
+    {:ok, assign(socket, changeset: changeset, current_user: current_user)}
   end
 
   def render(assigns) do
@@ -25,6 +17,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
 
   def handle_event("validate", %{"recipe" => params}, socket) do
     IO.inspect(params)
+
+    params =
+      params
+      |> Map.merge(%{"user_id" => socket.assigns.current_user.id})
 
     changeset =
       %Recipe{}
@@ -35,6 +31,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
   end
 
   def handle_event("save", %{"recipe" => params}, socket) do
+    params =
+      params
+      |> Map.merge(%{"user_id" => socket.assigns.current_user.id})
+
     case Recipes.create_recipe(params) do
       {:ok, recipe} ->
         {:noreply,
