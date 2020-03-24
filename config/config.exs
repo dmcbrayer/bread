@@ -29,7 +29,8 @@ config :phoenix, :json_library, Jason
 config :bread, :pow,
   user: Bread.Users.User,
   repo: Bread.Repo,
-  web_module: BreadWeb
+  web_module: BreadWeb,
+  extensions: [PowPersistentSession]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

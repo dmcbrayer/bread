@@ -47,5 +47,6 @@ defmodule BreadWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug Pow.Plug.Session, otp_app: :bread
+  plug PowPersistentSession.Plug.Cookie
   plug BreadWeb.Router
 end
