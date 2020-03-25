@@ -14,7 +14,7 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
       |> assign(:changeset, changeset)
       |> assign(:recipe, recipe)
 
-    {:ok, assign(socket, changeset: changeset)}
+    {:ok, socket}
   end
 
   def render(assigns) do
@@ -22,14 +22,12 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
   end
 
   def handle_event("validate", %{"recipe" => params}, %{assigns: %{recipe: recipe }} = socket) do
-    IO.inspect(params)
-
     changeset =
       recipe
       |> Recipes.change_recipe(params)
       |> Map.put(:action, :update)
 
-    {:noreply, assign(socket, changeset: changeset, params: params)}
+    {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"recipe" => params}, %{assigns: %{recipe: recipe}} = socket) do
@@ -47,116 +45,93 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
   end
 
 
-  def handle_event("add_ingredient", params, socket) do
-    IO.puts("Add Ingredient called")
-    starting_changeset = socket.assigns.changeset
-    recipe = socket.assigns.recipe
-
-    IO.inspect(params)
-
+  def handle_event("add_ingredient", _params, %{assigns: %{changeset: changeset}} = socket) do
     ingredients =
-      case Map.has_key?(starting_changeset.changes, :ingredients) do
-        true -> starting_changeset.changes.ingredients ++ [%Ingredient{}]
-        _ -> recipe.ingredients ++ [%Ingredient{}]
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:ingredients)
+      |> Kernel.++([%Ingredient{}])
 
     changeset =
-      starting_changeset
+      changeset
       |> Ecto.Changeset.change(%{ingredients: ingredients})
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("remove_ingredient", %{"idx" => idx}, socket) do
-    starting_cs = socket.assigns.changeset
-    recipe = socket.assigns.recipe
+  defp maybe_remove_ingredient(ingredients, idx) when length(ingredients) == 1, do: ingredients
+  defp maybe_remove_ingredient(ingredients, idx), do: remove_ingredient(ingredients, idx)
 
+  def handle_event("remove_ingredient", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
     ingredients =
-      case Map.has_key?(starting_cs.changes, :ingredients) do
-        true -> starting_cs.changes.ingredients
-        _ -> recipe.ingredients
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:ingredients)
+      |> maybe_remove_ingredient(idx)
 
-    new_ingredients =
-      case length(ingredients) do
-        1 -> ingredients
-        _ -> remove_ingredient(ingredients, idx)
-      end
-
-    recipe = Recipes.get_recipe!(socket.assigns.recipe.id)
+    recipe = Recipes.get_recipe!(changeset.data.id)
     changeset =
-      starting_cs
-      |> Ecto.Changeset.change(%{ingredients: new_ingredients})
+      changeset
+      |> Ecto.Changeset.change(%{ingredients: ingredients})
       |> Map.merge(%{data: recipe})
 
     {:noreply, assign(socket, changeset: changeset, recipe: recipe)}
 
   end
 
-  def handle_event("add_step", _params, socket) do
-    starting_cs = socket.assigns.changeset
-    recipe = socket.assigns.recipe
-
+  def handle_event("add_step", _params, %{assigns: %{changeset: changeset}} = socket) do
     steps =
-      case Map.has_key?(starting_cs.changes, :recipe_steps) do
-        true -> starting_cs.changes.recipe_steps ++ [%RecipeStep{}]
-        _ -> recipe.recipe_steps ++ [%RecipeStep{}]
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:recipe_steps)
+      |> Kernel.++([%RecipeStep{}])
 
     changeset =
-      starting_cs
+      changeset
       |> Ecto.Changeset.change(%{recipe_steps: steps})
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("remove_step", %{"idx" => idx}, socket) do
-    starting_cs = socket.assigns.changeset
-    recipe = socket.assigns.recipe
+  defp maybe_remove_step(steps, idx) when length(steps) == 1, do: steps
+  defp maybe_remove_step(steps, idx), do: remove_step(steps, idx)
 
+  def handle_event("remove_step", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
     steps =
-      case Map.has_key?(starting_cs.changes, :recipe_steps) do
-        true -> starting_cs.changes.recipe_steps
-        _ -> recipe.recipe_steps
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:recipe_steps)
+      |> maybe_remove_step(idx)
 
-    new_steps =
-      case length(steps) do
-        1 -> steps
-        _ -> remove_step(steps, idx)
-      end
-
-    recipe = Recipes.get_recipe!(socket.assigns.recipe.id)
+    recipe = Recipes.get_recipe!(changeset.data.id)
     changeset =
-      starting_cs
-      |> Ecto.Changeset.change(%{recipe_steps: new_steps})
+      changeset
+      |> Ecto.Changeset.change(%{recipe_steps: steps})
       |> Map.merge(%{data: recipe})
 
     {:noreply, assign(socket, changeset: changeset, recipe: recipe)}
   end
 
+  defp maybe_delete_step(%RecipeStep{id: nil}), do: nil
+  defp maybe_delete_step(%RecipeStep{} = step), do: Recipes.delete_recipe_step(step)
+  defp maybe_delete_step(step), do: nil
+
   defp remove_step(steps, index) do
     index = String.to_integer(index)
-    step = Enum.at(steps, index)
 
-    case step do
-      %RecipeStep{} = recipe_step ->
-        Recipes.delete_recipe_step(recipe_step)
-      %Ecto.Changeset{} -> nil
-    end
+    steps
+    |> Enum.at(index)
+    |> maybe_delete_step()
 
     List.delete_at(steps, index)
   end
 
+  defp maybe_delete_ingredient(%Ingredient{id: nil}), do: nil
+  defp maybe_delete_ingredient(%Ingredient{} = ingredient), do: Recipes.delete_ingredient(ingredient)
+  defp maybe_delete_ingredient(ingredient), do: nil
+
   defp remove_ingredient(ingredients, index) do
     index = String.to_integer(index)
-    ingredient = Enum.at(ingredients, index)
 
-    case ingredient do
-      %Ingredient{} = ingredient ->
-        Recipes.delete_ingredient(ingredient)
-      %Ecto.Changeset{} -> nil
-    end
+    ingredients
+    |> Enum.at(index)
+    |> maybe_delete_ingredient()
 
     List.delete_at(ingredients, index)
   end
