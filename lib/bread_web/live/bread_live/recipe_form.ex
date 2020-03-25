@@ -15,12 +15,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     Phoenix.View.render(BreadWeb.RecipeView, "form.html", assigns)
   end
 
-  def handle_event("validate", %{"recipe" => params}, socket) do
-    IO.inspect(params)
-
+  def handle_event("validate", %{"recipe" => params}, %{assigns: %{current_user: current_user}} = socket) do
     params =
       params
-      |> Map.merge(%{"user_id" => socket.assigns.current_user.id})
+      |> Map.merge(%{"user_id" => current_user.id})
 
     changeset =
       %Recipe{}
@@ -30,10 +28,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", %{"recipe" => params}, socket) do
+  def handle_event("save", %{"recipe" => params}, %{assigns: %{current_user: current_user}} = socket) do
     params =
       params
-      |> Map.merge(%{"user_id" => socket.assigns.current_user.id})
+      |> Map.merge(%{"user_id" => current_user.id})
 
     case Recipes.create_recipe(params) do
       {:ok, recipe} ->
@@ -48,69 +46,60 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     end
   end
 
-
-  def handle_event("add_ingredient", _params, socket) do
-    starting_changeset = socket.assigns.changeset
+  def handle_event("add_ingredient", _params, %{assigns: %{changeset: changeset}} = socket) do
     ingredients =
-      starting_changeset.changes.ingredients ++ [%Ingredient{}]
+      changeset
+      |> Ecto.Changeset.fetch_field!(:ingredients)
+      |> Kernel.++([%Ingredient{}])
 
     changeset =
-      starting_changeset
-      |> update_ingredients(ingredients)
+      changeset
+      |> Ecto.Changeset.change(%{ingredients: ingredients})
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("remove_ingredient", %{"idx" => idx}, socket) do
-    starting_changeset = socket.assigns.changeset
-
+  def handle_event("remove_ingredient", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
     ingredients =
-      case Enum.count(starting_changeset.changes.ingredients) do
-        1 -> starting_changeset.changes.ingredients
-        _ -> List.delete_at(starting_changeset.changes.ingredients, String.to_integer(idx))
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:ingredients)
+      |> maybe_remove_item(String.to_integer(idx))
 
     changeset =
-      starting_changeset
-      |> update_ingredients(ingredients)
+      changeset
+      |> Ecto.Changeset.change(%{ingredients: ingredients})
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-
-  def handle_event("add_step", _params, socket) do
-    starting_cs = socket.assigns.changeset
-    steps = starting_cs.changes.recipe_steps ++ [%RecipeStep{}]
-
-    changeset =
-      starting_cs
-      |> update_steps(steps)
-
-    {:noreply, assign(socket, changeset: changeset)}
-  end
-
-  def handle_event("remove_step", %{"idx" => idx}, socket) do
-    starting_cs = socket.assigns.changeset
+  def handle_event("add_step", _params, %{assigns: %{changeset: changeset}} = socket) do
     steps =
-      case Enum.count(starting_cs.changes.recipe_steps) do
-        1 -> starting_cs.changes.recipe_steps
-        _ -> List.delete_at(starting_cs.changes.recipe_steps, String.to_integer(idx))
-      end
+      changeset
+      |> Ecto.Changeset.fetch_field!(:recipe_steps)
+      |> Kernel.++([%RecipeStep{}])
 
     changeset =
-      starting_cs
-      |> update_steps(steps)
+      changeset
+      |> Ecto.Changeset.change(%{recipe_steps: steps})
 
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp update_ingredients(changeset, ingredients) do
-    changeset
-    |> Ecto.Changeset.change(%{ingredients: ingredients})
+  def handle_event("remove_step", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
+    steps =
+      changeset
+      |> Ecto.Changeset.fetch_field!(:recipe_steps)
+      |> maybe_remove_item(String.to_integer(idx))
+
+    changeset =
+      changeset
+      |> Ecto.Changeset.change(%{recipe_steps: steps})
+
+    {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp update_steps(changeset, steps) do
-    changeset
-    |> Ecto.Changeset.change(%{recipe_steps: steps})
+  defp maybe_remove_item(items, index) when length(items) == 1, do: items
+  defp maybe_remove_item(items, index) do
+    List.delete_at(items, index)
   end
 end
