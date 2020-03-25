@@ -9,8 +9,8 @@ defmodule Bread.Recipes.Recipe do
     field :name, :string
     field :starter, :string
     belongs_to :user, User
-    has_many :ingredients, Ingredient, on_delete: :delete_all
-    has_many :recipe_steps, RecipeStep, on_delete: :delete_all
+    has_many :ingredients, Ingredient, on_delete: :delete_all, on_replace: :delete
+    has_many :recipe_steps, RecipeStep, on_delete: :delete_all, on_replace: :delete
 
     timestamps()
   end
