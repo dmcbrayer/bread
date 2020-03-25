@@ -104,9 +104,8 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
 
   defp maybe_remove_item(items, _index) when length(items) == 1, do: items
   defp maybe_remove_item(items, index) do
-    items
-    |> Enum.at(index)
-    |> maybe_delete_item()
+    item = Enum.at(items, index)
+    Task.start(fn -> maybe_delete_item(item) end)
 
     List.delete_at(items, index)
   end
