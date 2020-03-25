@@ -2,7 +2,7 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
   use Phoenix.LiveView
   alias BreadWeb.Router.Helpers, as: Routes
   alias Bread.Recipes
-  alias Bread.Recipes.{Recipe,Ingredient,RecipeStep}
+  alias Bread.Recipes.{Ingredient,RecipeStep}
 
   def mount(%{"id" => recipe_id}, _session, socket) do
     recipe = Recipes.get_recipe!(recipe_id)
@@ -32,7 +32,7 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
 
   def handle_event("save", %{"recipe" => params}, %{assigns: %{recipe: recipe}} = socket) do
     case Recipes.update_recipe(recipe, params) do
-      {:ok, recipe} ->
+      {:ok, _recipe} ->
         {:noreply,
           socket
           |> put_flash(:info, "Recipe successfully saved")
@@ -58,14 +58,11 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp maybe_remove_ingredient(ingredients, idx) when length(ingredients) == 1, do: ingredients
-  defp maybe_remove_ingredient(ingredients, idx), do: remove_ingredient(ingredients, idx)
-
   def handle_event("remove_ingredient", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
     ingredients =
       changeset
       |> Ecto.Changeset.fetch_field!(:ingredients)
-      |> maybe_remove_ingredient(idx)
+      |> maybe_remove_item(String.to_integer(idx))
 
     recipe = Recipes.get_recipe!(changeset.data.id)
     changeset =
@@ -90,14 +87,11 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp maybe_remove_step(steps, idx) when length(steps) == 1, do: steps
-  defp maybe_remove_step(steps, idx), do: remove_step(steps, idx)
-
   def handle_event("remove_step", %{"idx" => idx}, %{assigns: %{changeset: changeset}} = socket) do
     steps =
       changeset
       |> Ecto.Changeset.fetch_field!(:recipe_steps)
-      |> maybe_remove_step(idx)
+      |> maybe_remove_item(String.to_integer(idx))
 
     recipe = Recipes.get_recipe!(changeset.data.id)
     changeset =
@@ -108,31 +102,17 @@ defmodule BreadWeb.BreadLive.EditRecipeForm do
     {:noreply, assign(socket, changeset: changeset, recipe: recipe)}
   end
 
-  defp maybe_delete_step(%RecipeStep{id: nil}), do: nil
-  defp maybe_delete_step(%RecipeStep{} = step), do: Recipes.delete_recipe_step(step)
-  defp maybe_delete_step(step), do: nil
-
-  defp remove_step(steps, index) do
-    index = String.to_integer(index)
-
-    steps
+  defp maybe_remove_item(items, _index) when length(items) == 1, do: items
+  defp maybe_remove_item(items, index) do
+    items
     |> Enum.at(index)
-    |> maybe_delete_step()
+    |> maybe_delete_item()
 
-    List.delete_at(steps, index)
+    List.delete_at(items, index)
   end
 
-  defp maybe_delete_ingredient(%Ingredient{id: nil}), do: nil
-  defp maybe_delete_ingredient(%Ingredient{} = ingredient), do: Recipes.delete_ingredient(ingredient)
-  defp maybe_delete_ingredient(ingredient), do: nil
-
-  defp remove_ingredient(ingredients, index) do
-    index = String.to_integer(index)
-
-    ingredients
-    |> Enum.at(index)
-    |> maybe_delete_ingredient()
-
-    List.delete_at(ingredients, index)
-  end
+  defp maybe_delete_item(%RecipeStep{id: nil}), do: nil
+  defp maybe_delete_item(%Ingredient{id: nil}), do: nil
+  defp maybe_delete_item(%RecipeStep{} = step), do: Recipes.delete_recipe_step(step)
+  defp maybe_delete_item(%Ingredient{} = ingredient), do: Recipes.delete_ingredient(ingredient)
 end
