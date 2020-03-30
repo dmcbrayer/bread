@@ -24,6 +24,7 @@
                 <%= link 'View', to: Routes.recipe_path(@conn, :show, recipe), class: "underline text-blue-400 hover:text-blue-500" %>
                 <%= link 'Edit', to: Routes.live_path(@conn, BreadWeb.BreadLive.EditRecipeForm, recipe.id), class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
                 <%= link "Delete", to: Routes.recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
+                <%= link "Bake", to: Routes.live_path(@conn, BreadWeb.BreadLive.BakeRecipe, recipe.id), class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
               </td>
 
             </tr>

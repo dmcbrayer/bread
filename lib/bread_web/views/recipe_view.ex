@@ -11,4 +11,11 @@ defmodule BreadWeb.RecipeView do
     Enum.sort_by(recipe_steps, &(&1.order))
     |> Enum.with_index()
   end
+
+  def loaf_types do
+    Recipe.loaf_types()
+    |> Map.keys()
+    |> Enum.map(fn loaf -> {humanize(loaf), loaf} end)
+  end
 end
+

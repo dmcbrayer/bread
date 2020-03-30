@@ -29,4 +29,19 @@ defmodule Bread.Recipes.Recipe do
   def starters do
     @starters
   end
+
+  def loaf_types do
+   %{
+      large_boule: 1000,
+      small_boule: 500,
+      baguette: 350,
+      ficelle: 250,
+      roll: 50,
+      miche: 2000,
+      large_sandwich_loaf: 900,
+      small_sandwich_loaf: 600,
+      large_pizza: 500,
+      home_pizza: 250
+    }
+  end
 end
