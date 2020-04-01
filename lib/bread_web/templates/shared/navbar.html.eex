@@ -6,15 +6,17 @@
     <div class="text-sm md:flex-grow">
       <%= link "Home", to: Routes.page_path(@conn, :index), class: "block mt-4 md:inline-block md:mt-0 text-teal-200 hover:text-white mr-4" %>
       <%= link "Recipes", to: Routes.recipe_path(@conn, :index), class: "block mt-4 md:inline-block md:mt-0 text-teal-200 hover:text-white mr-4" %>
-      <%= link "Bakes", to: "#", class: "block mt-4 md:inline-block md:mt-0 text-teal-200 hover:text-white mr-4" %>
       <%= if Pow.Plug.current_user(@conn) do %>
         <%= link "Logout", to: Routes.pow_session_path(@conn, :delete), method: :delete, class: "block mt-4 md:inline-block md:mt-0 text-teal-200 hover:text-white mr-4" %>
       <% else %>
         <%= link "Login", to: Routes.pow_session_path(@conn, :new), class: "block mt-4 md:inline-block md:mt-0 text-teal-200 hover:text-white mr-4" %>
       <% end %>
     </div>
-    <div>
-      <%= link "New Bake", to: "#", class: "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 md:mt-0" %>
-    </div>
+
+    <%= if Pow.Plug.current_user(@conn) do %>
+      <div>
+        <%= link "New Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 md:mt-0" %>
+      </div>
+    <% end %>
   </div>
 </nav>
