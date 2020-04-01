@@ -19,6 +19,7 @@ defmodule BreadWeb.Router do
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: Pow.Phoenix.PlugErrorHandler
+    plug :put_user_token
   end
 
   scope "/", BreadWeb do
@@ -50,5 +51,15 @@ defmodule BreadWeb.Router do
 
   def with_current_user(conn) do
     %{"current_user" => Pow.Plug.current_user(conn)}
+  end
+
+  defp put_user_token(conn, _) do
+    if current_user = Pow.Plug.current_user(conn) do
+      salt = BreadWeb.Endpoint.config(:secret_key_base)
+      token = Phoenix.Token.sign(conn, salt, current_user.id)
+      assign(conn, :user_token, token)
+    else
+      conn
+    end
   end
 end
