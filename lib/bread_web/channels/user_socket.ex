@@ -15,7 +15,7 @@ defmodule BreadWeb.UserSocket do
     end
   end
 
-  def connect(_, socket) do
+  def connect(_, _socket) do
     Logger.error("#{__MODULE__} connect error missing params")
     :error
   end
