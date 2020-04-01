@@ -7,11 +7,11 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
   defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || []
 });
 
-module.exports = {
+module.exports = (ctx) => ({
   plugins: [
     require('tailwindcss'),
     require('autoprefixer'),
-    ...process.env.NODE_ENV === 'production' ? [purgecss] : []
+    ...ctx.webpack.mode === 'production' ? [purgecss] : []
   ]
-}
+})
 
