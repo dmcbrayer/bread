@@ -46,6 +46,7 @@ RUN mix local.hex --force && \
 
 # set build ENV
 ENV MIX_ENV=prod
+ENV NODE_ENV=production
 
 # install mix dependencies
 COPY mix.exs mix.lock ./
@@ -56,11 +57,11 @@ RUN mix deps.compile
 # build assets
 COPY assets assets
 COPY priv priv
+COPY lib lib
 RUN npm install --prefix ./assets && npm run deploy --prefix ./assets
 RUN mix phx.digest
 
 # build project
-COPY lib lib
 RUN mix compile
 
 # build release (uncomment COPY if rel/ exists)
