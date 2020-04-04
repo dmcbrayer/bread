@@ -1,74 +1,74 @@
-<div class="container">
-   <div class="w-full m-auto max-w-lg mt-4">
-     <h1 class="text-4xl">Build Your Recipe</h1>
+<div class="container m-auto mt-4">
+  <div class="w-full m-auto max-w-xl p-8">
+    <h1 class="text-3xl font-bold mb-8">Build Your Recipe</h1>
+    <%= f = form_for @changeset, "#", [phx_change: :validate, phx_submit: :save, class: "bg-white"] %>
 
-     <%= f = form_for @changeset, "#", [phx_change: :validate, phx_submit: :save, class: "bg-white border border-4 border-gray-400 rounded px-8 py-8 mb-4"] %>
-       <div class="mb-4">
-         <%= label f, :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
-         <%= text_input f, :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-         <%= error_tag f, :name %>
-       </div>
+      <div class="p-4 mb-4 bg-gray-200 rounded">
+        <h3 class="text-lg font-bold mb-4">Basics</h3>
+        <div class="mb-4">
+          <%= label f, :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= text_input f, :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+          <%= error_tag f, :name %>
+        </div>
 
-       <div class="mb-4">
-         <%= label f, :starter, class: "block text-gray-700 text-sm font-bold mb-2" %>
-         <div class="inline-block relative w-full">
-           <%= select f, :starter, bread_starters(), class: "block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" %>
-           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-           </div>
-         </div>
-         <%= error_tag f, :starter %>
-       </div>
+        <div class="mb-4">
+          <%= label f, :starter, class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <div class="inline-block relative w-full">
+            <%= select f, :starter, bread_starters(), class: "block appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" %>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+          <%= error_tag f, :starter %>
+        </div>
+      </div>
 
-       <hr />
+      <h3 class="text-lg my-4">Ingredients</h3>
+      <div class="mb-4">
+        <%= inputs_for f, :ingredients, fn fp -> %>
+          <div class="flex flex-wrap">
+            <div class="w-full md:w-1/2 pr-3">
+              <%= label fp, :amount, class: "block text-gray-700 text-sm font-bold mb-2" %>
+              <%= number_input fp, :amount, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+              <%= error_tag fp, :amount %>
+            </div>
 
-       <h3 class="text-lg my-4">Ingredients</h3>
-       <div class="mb-4">
-         <%= inputs_for f, :ingredients, fn fp -> %>
-           <div class="flex flex-wrap">
-             <div class="w-full md:w-1/2 pr-3">
-               <%= label fp, :amount, class: "block text-gray-700 text-sm font-bold mb-2" %>
-               <%= number_input fp, :amount, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-               <%= error_tag fp, :amount %>
-             </div>
+            <div class="w-full md:w-1/2">
+              <%= label fp, :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+              <%= text_input fp, :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+              <%= error_tag fp, :name %>
+            </div>
+          </div>
 
-             <div class="w-full md:w-1/2">
-               <%= label fp, :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
-               <%= text_input fp, :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
-               <%= error_tag fp, :name %>
-             </div>
-           </div>
+          <div class="mt-2 mb-6">
+            <a phx-click="remove_ingredient" phx-value-idx=<%= fp.index %> class="cursor-pointer underline font-bold text-blue-600">Remove Ingredient</a>
+          </div>
+        <% end %>
+      </div>
 
-           <div class="mt-2 mb-6">
-             <a phx-click="remove_ingredient" phx-value-idx=<%= fp.index %> class="cursor-pointer underline font-bold text-blue-600">Remove Ingredient</a>
-           </div>
-         <% end %>
-       </div>
+      <div class="my-4">
+        <a phx-click="add_ingredient" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 border border-green-700 rounded cursor-pointer">Add Ingredient</a>
+      </div>
 
-       <div class="my-4">
-         <a phx-click="add_ingredient" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 border border-green-700 rounded cursor-pointer">Add Ingredient</a>
-       </div>
+      <%= inputs_for f, :recipe_steps, fn fp -> %>
+        <%= label fp, "Step #{fp.index + 1}", class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= textarea fp, :body, class: "resize-none shadow appearance-none border rounded w-full py-2 px-3 h-40" %>
+        <%= error_tag fp, :body %>
 
-       <%= inputs_for f, :recipe_steps, fn fp -> %>
-         <%= label fp, "Step #{fp.index + 1}", class: "block text-gray-700 text-sm font-bold mb-2" %>
-         <%= textarea fp, :body, class: "resize-none shadow appearance-none border rounded w-full py-2 px-3 h-40" %>
-         <%= error_tag fp, :body %>
+        <%= hidden_input fp, :order, value: fp.index %>
 
-         <%= hidden_input fp, :order, value: fp.index %>
+        <div class="mt-2 mb-6">
+          <a phx-click="remove_step" phx-value-idx=<%= fp.index %> class="cursor-pointer underline font-bold text-blue-600">Remove Step</a>
+        </div>
+      <% end %>
 
-         <div class="mt-2 mb-6">
-           <a phx-click="remove_step" phx-value-idx=<%= fp.index %> class="cursor-pointer underline font-bold text-blue-600">Remove Step</a>
-         </div>
-       <% end %>
+      <div class="my-4">
+        <a phx-click="add_step" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 border border-green-700 rounded cursor-pointer">Add Step</a>
+      </div>
 
-       <div class="my-4">
-         <a phx-click="add_step" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 border border-green-700 rounded cursor-pointer">Add Step</a>
-       </div>
+      <%= submit "Save", class: "my-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" %>
 
-       <%= submit "Save", class: "my-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" %>
-
-       <%= link "Back", to: Routes.page_path(@socket, :index), class: "underline text-blue-600 block"%>
-     </form>
-
+      <%= link "Back", to: Routes.page_path(@socket, :index), class: "underline text-blue-600 block"%>
+    </form>
   </div>
 </div>
