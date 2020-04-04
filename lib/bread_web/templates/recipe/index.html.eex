@@ -1,37 +1,30 @@
-<div class="container">
-  <div class="w-full m-auto max-w-xl mt-4">
-    <h1 class="text-4xl">Your Recipes</h1>
+<div class="container m-auto mt-4">
+  <h1 class="text-2xl font-bold">Your Recipes</h1>
 
-    <div class="my-4">
-      <%= link "New Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "text-white font-bold py-2 px-4 rounded cursor-pointer bg-teal-500 hover:bg-teal-600 my-4" %>
-    </div>
+  <div class="my-2">
+    <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "inline-block text-sm px-3 py-2 leading-none border rounded text-yellow-700 border-yellow-800 hover:border-transparent hover:text-white hover:bg-yellow-800 mt-4 md:mt-0" do %>
+      <span class="fas fa-plus mr-1"></span> New Recipe
+    <% end %>
+  </div>
 
-    <div class="bg-gray-200 align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-      <table class="min-w-full">
-        <thead>
-          <tr>
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Id</th>
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Name</th>
-            <th class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider" >Actions</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white">
-          <%= for recipe <- @recipes do %>
-            <tr>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe.id %></td>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600"><%= recipe.name %></td>
-              <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200 text-sm leading-5 text-gray-600">
-                <%= link 'View', to: Routes.recipe_path(@conn, :show, recipe), class: "underline text-blue-400 hover:text-blue-500" %>
-                <%= link 'Edit', to: Routes.live_path(@conn, BreadWeb.BreadLive.EditRecipeForm, recipe.id), class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
-                <%= link "Delete", to: Routes.recipe_path(@conn, :delete, recipe), method: :delete, data: [confirm: "Are you sure?"], class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
-                <%= link "Bake", to: Routes.live_path(@conn, BreadWeb.BreadLive.BakeRecipe, recipe.id), class: "ml-2 underline text-blue-400 hover:text-blue-500" %>
-              </td>
+  <div class="mt-8 flex flex-wrap">
+    <%= for recipe <- @recipes do %>
 
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+      <%= link to: Routes.recipe_path(@conn, :show, recipe) do %>
+        <div class="bg-white rounded shadow-xl border border-gray-300 hover:border-robin-600 mr-4 mb-4">
+          <div class="p-5">
+            <h3 class="text-lg font-bold"><%= recipe.name %></h3>
+            <h6 class="text-sm text-gray-500">Added <%= Timex.format!(recipe.inserted_at, "%b %d, %Y", :strftime) %></h6>
 
-    </div>
+          </div>
+
+          <div class="px-5 py-4 bg-robin-100">
+            <span class="inline-block bg-robin-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
+            <span class="inline-block bg-robin-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
+            <span class="inline-block bg-robin-300 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   </div>
 </div>

@@ -12,7 +12,7 @@
     <header>
       <%= render BreadWeb.SharedView, "navbar.html", assigns %>
     </header>
-    <main role="main" class="container">
+    <main role="main">
       <%= render BreadWeb.SharedView, "flash.html", assigns %>
 
       <%= render @view_module, @view_template, assigns %>
