@@ -13,3 +13,27 @@
   font-size: 6rem;
 }
 
+.text-9xl {
+  font-size: 7rem;
+}
+
+.text-12xl {
+  font-size: 10rem;
+}
+
+.leading-tight-xl {
+  line-height: .85;
+}
+
+.hero-header {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+@media only screen and (min-width: 768px) {
+  .hero-header {
+    font-size: 8rem;
+    line-height: .85;
+  }
+}
+
