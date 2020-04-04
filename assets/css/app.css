@@ -1,6 +1,19 @@
 /* This file is for your main application css. */
 @tailwind base;
 @tailwind components;
+
+.content-container {
+  @apply m-auto mt-4;
+}
+
+.page-header {
+  @apply text-4xl font-bold;
+}
+
+.section-header {
+  @apply text-2xl font-bold;
+}
+
 @tailwind utilities;
 
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
