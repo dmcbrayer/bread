@@ -4,3 +4,12 @@
 @tailwind utilities;
 
 @import "../../deps/phoenix_live_view/assets/css/live_view.css";
+
+.text-7xl {
+  font-size: 5rem;
+}
+
+.text-8xl {
+  font-size: 6rem;
+}
+

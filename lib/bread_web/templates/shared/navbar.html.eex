@@ -1,9 +1,9 @@
-<nav class="flex justify between flex-wrap bg-white px-10 py-4" >
+<nav class="container m-auto flex justify between flex-wrap bg-white px-2 py-4" >
   <div class="flex items-center flex-shrink-0 text-white mr-6">
-    <span class="font-semibold text-xl tracking-tight text-yellow-800 pb-1" >Bread App</span>
+    <span class="font-semibold text-2xl tracking-tight text-yellow-800 pb-1">Bread App</span>
   </div>
-  <div class="w-full block flex-grow md:flex md:items-center md:w-auto">
-    <div class="text-sm md:flex-grow">
+  <div class="w-full block flex-grow md:flex md:items-center md:w-auto text-md">
+    <div class="md:flex-grow">
       <%= link "Home", to: Routes.page_path(@conn, :index), class: "block mt-4 md:inline-block md:mt-0 text-yellow-700 border-white border-b-2 hover:border-yellow-700 mr-2 px-2 py-1" %>
       <%= link "Recipes", to: Routes.recipe_path(@conn, :index), class: "block mt-4 md:inline-block md:mt-0 text-yellow-700 mr-2 border-white border-b-2 hover:border-yellow-700 mr-2 px-2 py-1" %>
       <%= if Pow.Plug.current_user(@conn) do %>
@@ -15,7 +15,9 @@
 
     <%= if Pow.Plug.current_user(@conn) do %>
       <div>
-        <%= link "New Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "inline-block text-sm px-4 py-2 leading-none border rounded text-yellow-700 border-yellow-800 hover:border-transparent hover:text-white hover:bg-yellow-800 mt-4 md:mt-0" %>
+        <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "inline-block text-sm px-3 py-2 leading-none border rounded text-yellow-700 border-yellow-800 hover:border-transparent hover:text-white hover:bg-yellow-800 mt-4 md:mt-0" do %>
+          <span class="fas fa-plus mr-1"></span> New Recipe
+        <% end %>
       </div>
     <% end %>
   </div>
