@@ -20,7 +20,7 @@ defmodule Bread.MixProject do
   def application do
     [
       mod: {Bread.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :timex]
     ]
   end
 
@@ -46,7 +46,8 @@ defmodule Bread.MixProject do
       {:phoenix_live_view, "~> 0.9.0"},
       {:floki, ">= 0.0.0", only: :test},
       {:pow, "~> 1.0.18"},
-      {:observer_cli, "~> 1.5"}
+      {:observer_cli, "~> 1.5"},
+      {:timex, "~> 3.6"}
     ]
   end
 
