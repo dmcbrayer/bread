@@ -1,0 +1,41 @@
+<div>
+  <a href="#" phx-click="toggle_scaling" class="inline-block text-lg text-yellow-700 py-3 hover:text-yellow-800">
+    <%= if @scaling do %>
+      Percentage View
+    <% else %>
+      Scale Recipe
+    <% end %>
+  </a>
+
+
+  <%= if @scaling do %>
+    <%= f = form_for :scale, "#", [phx_change: :validate] %>
+      <%= label f, :amount, "Amount (g)", class: "block text-md font-bold mb-2" %>
+      <%= number_input f, :amount, value: @amount, class: "shadow appearance-none border w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"  %>
+      <%= error_tag f, :amount %>
+    </form>
+  <% end %>
+
+  <table class="my-4 table-fixed w-full bg-yellow-100">
+    <thead>
+      <tr>
+        <th class="py-2 pl-1 pr-6 border-b-2 border-gray-800 text-left leading-4 font-bold w-1/4 bg-yellow-100" >
+          <%= if @scaling do %>
+            Amount (g)
+          <% else %>
+            Amount (%)
+          <% end %>
+        </th>
+        <th class="py-2 pl-6 border-l-2 border-b-2 border-gray-800 text-left leading-4 font-bold w-3/4" >Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for {amount, name} <- @ingredients do %>
+        <tr>
+          <td class="pl-1 py-2 pr-6 whitespace-no-wrap border-b border-gray-800 leading-5 text-gray-800"><%= amount %></td>
+          <td class="pl-1 py-2 pl-6 whitespace-no-wrap border-b border-l-2 border-gray-800 leading-5 text-gray-800"><%= name %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

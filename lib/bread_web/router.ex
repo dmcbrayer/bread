@@ -35,7 +35,7 @@ defmodule BreadWeb.Router do
       resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
 
       live "/recipes/:id/edit", BreadLive.EditRecipeForm, session: {__MODULE__, :with_current_user, []}
-      live "/recipes/:id/bake", BreadLive.BakeRecipe, session: {__MODULE__, :with_current_user, []}
+      # live "/recipes/:id/bake", BreadLive.BakeRecipe, session: {__MODULE__, :with_current_user, []}
     end
   end
 

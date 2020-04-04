@@ -10,7 +10,7 @@ defmodule Bread.CalculateFlour do
     round(amount / flour_proportion)
   end
 
-  def adjusted_ingredients(ingredients, total_flour) do
+  def adjusted_ingredients(total_flour, ingredients) do
     Enum.map(ingredients, fn i ->
       new_amount = (i.amount / 100) * total_flour
       Map.replace!(i, :amount, round(new_amount))

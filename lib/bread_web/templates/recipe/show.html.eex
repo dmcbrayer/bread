@@ -16,22 +16,7 @@
       <div class="mt-6 ">
         <h3 class="section-header">Ingredients</h3>
 
-        <table class="my-4 table-fixed w-full bg-yellow-100">
-          <thead>
-            <tr>
-              <th class="py-2 pl-1 pr-6 border-b-2 border-gray-800 text-left leading-4 font-bold w-1/4 bg-yellow-100" >Amount (%) </th>
-              <th class="py-2 pl-6 border-l-2 border-b-2 border-gray-800 text-left leading-4 font-bold w-3/4" >Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            <%= for ingredient <- Enum.sort_by(@recipe.ingredients, &(&1.amount), :desc) do %>
-              <tr>
-                <td class="pl-1 py-2 pr-6 whitespace-no-wrap border-b border-gray-800 leading-5 text-gray-800"><%= ingredient.amount %></td>
-                <td class="pl-1 py-2 pl-6 whitespace-no-wrap border-b border-l-2 border-gray-800 leading-5 text-gray-800"><%= ingredient.name %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+        <%= live_render(@conn, BreadWeb.BreadLive.ScaleRecipe, session: %{"recipe" => @recipe}) %>
       </div>
 
       <div class="mt-6">
@@ -50,12 +35,9 @@
       </div>
     </div>
 
-    <div class="w-full md:w-1/3 bg-gray-100 p-3 md:h-screen">
+    <div class="w-full md:w-1/3 bg-gray-100 px-6 md:h-screen">
       <div class="mt-6">
-        <h3 class="text-2xl font-bold">Bake</h3>
-        <div class="my-4">
-          <%= link "Bake This Recipe", to: Routes.live_path(@conn, BreadWeb.BreadLive.BakeRecipe, @recipe.id), class: "underline text-lg text-yellow-700 hover:text-yellow-800" %>
-        </div>
+        <h3 class="text-2xl font-bold">About</h3>
       </div>
     </div>
   </div>
