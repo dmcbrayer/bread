@@ -1,26 +1,19 @@
 // We need to import the CSS so that webpack will load it.
-// The MiniCssExtractPlugin is used to separate it out into
-// its own CSS file.
 import css from "../css/app.css"
 
-import "@fortawesome/fontawesome-free/js/all";
-
-// webpack automatically bundles all modules in your
-// entry points. Those entry points can be configured
-// in "webpack.config.js".
-//
 // Import dependencies
 //
 import "phoenix_html"
+import {Socket} from "phoenix"
+import LiveSocket from "phoenix_live_view"
+import "@fortawesome/fontawesome-free/js/all";
 
 // Import local files
 //
-// Local files can be imported directly using relative paths, for example:
-import socket from "./socket"
+// import socket from "./socket"
 
-import {Socket} from "phoenix"
-import LiveSocket from "phoenix_live_view"
-
+// LiveView set up
+//
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   params: { _csrf_token: csrfToken },
@@ -28,6 +21,23 @@ let liveSocket = new LiveSocket("/live", Socket, {
 });
 liveSocket.connect();
 
+// Normal Socket set up
+//
+let socket = new Socket("/socket", {
+  params: {token: window.userToken},
+  logger: (kind, msg, data) => { console.log(`${kind}: ${msg}`, data)}
+})
+
+if(window.userToken !== "") {
+  socket.connect()
+
+  let channel = socket.channel("room:1", {})
+  channel.join()
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
+
+  channel.on("test", data => console.log(data))
+}
 
 // Navbar toggling
 const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
