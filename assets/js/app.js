@@ -31,7 +31,9 @@ let socket = new Socket("/socket", {
 if(window.userToken !== "") {
   socket.connect()
 
-  let channel = socket.channel("room:1", {})
+  let channel = socket.channel("room:1", {
+    path: window.location.pathname
+  })
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
     .receive("error", resp => { console.log("Unable to join", resp) })
