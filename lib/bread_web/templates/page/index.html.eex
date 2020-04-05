@@ -10,7 +10,9 @@
         </p>
 
         <%= if !Pow.Plug.current_user(@conn) do %>
-          <%= link "SIGN UP TO START", to: Routes.pow_registration_path(@conn, :new), class: "inline-block mt-6 text-2xl font-bold rounded text-yellow-700 p-4 bg-yellow-100 hover:bg-yellow-200 shadow-xl" %>
+          <%= link to: Routes.pow_registration_path(@conn, :new), class: "inline-block mt-6 text-xl md:text-2xl font-bold rounded text-yellow-700 p-2 md:p-4 bg-yellow-100 hover:bg-yellow-200 shadow-xl" do %>
+            <i class="fas fa-bread-slice mr-2" ></i> Get Started
+          <% end %>
         <% end %>
       </div>
     </div>
