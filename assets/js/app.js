@@ -27,3 +27,14 @@ let liveSocket = new LiveSocket("/live", Socket, {
   logger: (kind, msg, data) => { console.log(`${kind}: ${msg}:`, data)}
 });
 liveSocket.connect();
+
+
+// Navbar toggling
+const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
+triggers.forEach(trigger => {
+  const selector = trigger.getAttribute('data-target');
+  const targetElement = document.getElementById(selector);
+  trigger.addEventListener('click', event => {
+    targetElement.classList.toggle('show')
+  })
+})
