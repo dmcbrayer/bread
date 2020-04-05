@@ -10,6 +10,7 @@ const purgecss = require("@fullhuman/postcss-purgecss")({
 module.exports = (ctx) => ({
   plugins: [
     require('tailwindcss'),
+    require('precss'),
     require('autoprefixer'),
     ...ctx.webpack.mode === 'production' ? [purgecss] : []
   ]
