@@ -42,13 +42,13 @@
             </div>
 
             <div class="mt-4 text-right">
-              <a phx-click="remove_ingredient" phx-value-idx=<%= fp.index %> class="cursor-pointer font-bold text-red-600">
+              <a href="#" phx-click="remove_ingredient" phx-value-idx=<%= fp.index %> class="cursor-pointer font-bold text-red-600">
                 <i class="far fa-trash-alt mr-2"></i>Remove</a>
             </div>
           </div>
         <% end %>
         <div class="my-4">
-          <a phx-click="add_ingredient" class="text-green-600 font-bold py-2 px-4 border border-green-600 rounded cursor-pointer">
+          <a href="#" phx-click="add_ingredient" class="text-green-600 font-bold py-2 px-4 border border-green-600 rounded cursor-pointer">
             <i class="fas fa-plus mr-2"></i>Add Ingredient
           </a>
         </div>
@@ -65,13 +65,13 @@
           <%= hidden_input fp, :order, value: fp.index %>
 
           <div class="mt-2 mb-6 text-right">
-            <a phx-click="remove_step" phx-value-idx=<%= fp.index %> class="cursor-pointer font-bold text-red-600">
+            <a href="#" phx-click="remove_step" phx-value-idx=<%= fp.index %> class="cursor-pointer font-bold text-red-600">
               <i class="far fa-trash-alt mr-2"></i>Remove</a>
           </div>
         <% end %>
 
         <div class="my-4">
-          <a phx-click="add_step" class="text-green-600 font-bold py-2 px-4 border border-green-600 rounded cursor-pointer">
+          <a href="#" phx-click="add_step" class="text-green-600 font-bold py-2 px-4 border border-green-600 rounded cursor-pointer">
             <i class="fas fa-plus mr-2"></i>Add Step
           </a>
         </div>
