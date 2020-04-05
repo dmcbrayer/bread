@@ -9,7 +9,9 @@
           Track and scale your bread recipes using baker's percentage.
         </p>
 
-        <%= link "SIGN UP TO START", to: Routes.pow_registration_path(@conn, :new), class: "inline-block mt-6 text-2xl font-bold rounded text-yellow-700 p-4 bg-yellow-100 hover:bg-yellow-200 shadow-xl" %>
+        <%= if !Pow.Plug.current_user(@conn) do %>
+          <%= link "SIGN UP TO START", to: Routes.pow_registration_path(@conn, :new), class: "inline-block mt-6 text-2xl font-bold rounded text-yellow-700 p-4 bg-yellow-100 hover:bg-yellow-200 shadow-xl" %>
+        <% end %>
       </div>
     </div>
   </div>
