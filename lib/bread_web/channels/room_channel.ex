@@ -3,9 +3,12 @@ defmodule BreadWeb.RoomChannel do
 
   def join("room:" <> room_id, %{"path" => path}, socket) do
     {:ok, ref} =
-      Bread.Tracker.start_link(%{
+      Bread.UserTracker.start_link(%{
         path: path,
         user_id: socket.assigns.user_id,
+        session_id: socket.assigns.user_id,
+        starts_at: DateTime.utc_now(),
+        ends_at: DateTime.utc_now(),
         time: 0
       })
 
@@ -20,7 +23,7 @@ defmodule BreadWeb.RoomChannel do
   end
 
   def handle_info(:tick, %{assigns: %{tracker_ref: ref}} = socket) do
-    Bread.Tracker.tick(ref)
+    Bread.UserTracker.tick(ref)
     Process.send_after(self(), :tick, 1000)
 
     {:noreply, socket}

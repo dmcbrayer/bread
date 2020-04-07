@@ -11,7 +11,8 @@ defmodule Bread.Application do
       # Start the Ecto repository
       Bread.Repo,
       # Start the endpoint when the application starts
-      BreadWeb.Endpoint
+      BreadWeb.Endpoint,
+      {Registry, keys: :unique, name: Tracker.Registry}
       # Starts a worker by calling: Bread.Worker.start_link(arg)
       # {Bread.Worker, arg},
     ]
