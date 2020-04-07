@@ -31,7 +31,9 @@ defmodule BreadWeb.RoomChannel do
 
   # Dump the state of the tracking bucket to something
   # more permanent
-  def terminate(_reason, %{assigns: %{tracker_ref: ref}} = socket) do
-    IO.inspect(Bread.Tracker.bucket_state(ref))
+  def terminate(_reason, %{assigns: %{tracker_ref: ref}}) do
+    state = Bread.UserTracker.get_state(ref)
+    IO.puts("Dumping user state to disk...")
+    Task.start(fn -> Bread.Dump.dump(state) end)
   end
 end
