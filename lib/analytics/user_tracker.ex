@@ -4,8 +4,8 @@ defmodule Analytics.UserTracker do
 
   alias Analytics.PageView
 
-  # kill after 1 hour
-  @kill_after 60 * 60 * 1000
+  # kill after 10 minutes
+  @kill_after 10 * 60 * 1000
 
   def start_link(%PageView{} = state) when is_map_key(state, :session_id) do
     GenServer.start_link(__MODULE__,  %{page_views: [state]}, name: via_tuple(state))
