@@ -1,4 +1,8 @@
 defmodule Bread.Users do
+  use Pow.Ecto.Context,
+    repo: Bread.Repo,
+    user: Bread.Users.User
+
   @moduledoc """
   The Users context.
   """
@@ -11,6 +15,10 @@ defmodule Bread.Users do
   def list_users do
     User
     |> Repo.all()
+  end
+
+  def create(params) do
+    pow_create(params)
   end
 end
 
