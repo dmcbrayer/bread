@@ -1,5 +1,6 @@
 defmodule Analytics.UserTracker do
-  use GenServer
+  use GenServer,
+    restart: :transient
 
   alias Analytics.PageView
 
