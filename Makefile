@@ -8,7 +8,7 @@ build:
 
 release:
 	docker run -it --rm -v $(PWD)/_build:/app/_build $(DOCKER_TAG)
-	tar -zcvf release.tar.gz $(PWD)/_build/prod
+	tar -zcf release.tar.gz $(PWD)/_build/prod
 
 deploy: ## Deploy the thing
 	ssh $(DEPLOY_TARGET) sudo systemctl stop $(DEPLOY_SERVICE)
