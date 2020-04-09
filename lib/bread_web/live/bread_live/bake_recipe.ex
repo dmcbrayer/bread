@@ -1,8 +1,7 @@
 defmodule BreadWeb.BreadLive.BakeRecipe do
   use Phoenix.LiveView
-  alias BreadWeb.Router.Helpers, as: Routes
   alias Bread.Recipes
-  alias Bread.Recipes.{Recipe,Ingredient}
+  alias Bread.Recipes.Recipe
   alias Bread.CalculateFlour
 
   def mount(%{"id" => recipe_id}, %{"current_user" => current_user}, socket) do
@@ -22,7 +21,7 @@ defmodule BreadWeb.BreadLive.BakeRecipe do
     Phoenix.View.render(BreadWeb.RecipeView, "bake.html", assigns)
   end
 
-  def handle_event("validate", %{"bake" => %{"amount" => "", "loaf_type" => loaf_type}}, %{assigns: %{recipe: recipe}} = socket) do
+  def handle_event("validate", %{"bake" => %{"amount" => "", "loaf_type" => loaf_type}}, socket) do
     socket =
       socket
       |> assign(:loaf_type, loaf_type)

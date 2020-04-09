@@ -1,8 +1,5 @@
 defmodule BreadWeb.BreadLive.ScaleRecipe do
   use Phoenix.LiveView
-  alias BreadWeb.Router.Helpers, as: Routes
-  alias Bread.Recipes
-  alias Bread.Recipes.{Recipe,Ingredient}
   alias Bread.CalculateFlour
 
   def mount(_params, %{"recipe" => recipe}, socket) do
@@ -39,13 +36,6 @@ defmodule BreadWeb.BreadLive.ScaleRecipe do
     {:noreply, assign(socket, amount: amount, ingredients: ingredients)}
   end
 
-  defp recalculate_ingredients(recipe, amount) do
-    recipe
-    |> CalculateFlour.total_flour(amount)
-    |> CalculateFlour.adjusted_ingredients(Enum.sort_by(recipe.ingredients, &(&1.amount), :desc))
-    |> Enum.map(&({&1.amount, &1.name}))
-  end
-
   def handle_event("toggle_scaling", _params, socket) do
     %{
       scaling: scaling,
@@ -54,7 +44,7 @@ defmodule BreadWeb.BreadLive.ScaleRecipe do
       amount: amount
     } = socket.assigns
 
-    ingredients =
+    new_ingredients =
       cond do
         scaling ->
           recipe.ingredients
@@ -68,9 +58,16 @@ defmodule BreadWeb.BreadLive.ScaleRecipe do
     socket =
       socket
       |> assign(:scaling, !scaling)
-      |> assign(:ingredients, ingredients)
+      |> assign(:ingredients, new_ingredients)
 
     {:noreply, socket}
+  end
+
+  defp recalculate_ingredients(recipe, amount) do
+    recipe
+    |> CalculateFlour.total_flour(amount)
+    |> CalculateFlour.adjusted_ingredients(Enum.sort_by(recipe.ingredients, &(&1.amount), :desc))
+    |> Enum.map(&({&1.amount, &1.name}))
   end
 end
 
