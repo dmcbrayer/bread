@@ -18,6 +18,7 @@
       <%= render @view_module, @view_template, assigns %>
     </main>
     <script>window.userToken = "<%= assigns[:user_token] %>";</script>
+    <script>window.sessionId = "<%= @conn.cookies["_bread_analytics_session_id"] %>";</script>
     <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </body>
 </html>

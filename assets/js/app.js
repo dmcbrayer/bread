@@ -32,7 +32,8 @@ if(window.userToken !== "") {
   socket.connect()
 
   let channel = socket.channel("room:1", {
-    path: window.location.pathname
+    path: window.location.pathname,
+    sessionId: window.sessionId
   })
   channel.join()
     .receive("ok", resp => { console.log("Joined successfully", resp) })
