@@ -1,8 +1,6 @@
 defmodule Bread.Recipes.RecipeQueries do
   import Ecto.Query, warn: false
 
-  alias Bread.Repo
-  alias Bread.Recipes.Recipe
   alias Bread.Users.User
 
   def by_user(query, %User{id: user_id}) do

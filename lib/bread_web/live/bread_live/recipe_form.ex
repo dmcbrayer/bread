@@ -34,7 +34,7 @@ defmodule BreadWeb.BreadLive.RecipeForm do
       |> Map.merge(%{"user_id" => current_user.id})
 
     case Recipes.create_recipe(params) do
-      {:ok, recipe} ->
+      {:ok, _recipe} ->
         {:noreply,
           socket
           |> put_flash(:info, "Recipe successfully saved")
@@ -98,7 +98,7 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  defp maybe_remove_item(items, index) when length(items) == 1, do: items
+  defp maybe_remove_item(items, _index) when length(items) == 1, do: items
   defp maybe_remove_item(items, index) do
     List.delete_at(items, index)
   end
