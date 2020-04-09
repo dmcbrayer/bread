@@ -20,6 +20,7 @@ defmodule BreadWeb.Router do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: Pow.Phoenix.PlugErrorHandler
     plug :put_user_token
+    plug :put_session_id
   end
 
   scope "/", BreadWeb do
@@ -60,6 +61,17 @@ defmodule BreadWeb.Router do
       assign(conn, :user_token, token)
     else
       conn
+    end
+  end
+
+  @max_age 3600
+  defp put_session_id(conn, _) do
+    if conn.req_cookies["_bread_analytics_session_id"] do
+      conn
+    else
+      session_id = SecureRandom.urlsafe_base64()
+      conn
+      |> put_resp_cookie("_bread_analytics_session_id", session_id, signed: true, max_age: @max_age)
     end
   end
 end
