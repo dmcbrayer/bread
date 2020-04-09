@@ -17,4 +17,7 @@
       </div>
     </div>
   </div>
+  <div class="w-full my-10">
+    <%= live_render(@conn, BreadWeb.BreadLive.ActiveSessions) %>
+  </div>
 </section>

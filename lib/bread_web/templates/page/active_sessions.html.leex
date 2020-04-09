@@ -1,0 +1,9 @@
+<h1>These are some active sessions</h1>
+
+<%= for session <- @sessions do %>
+  <ul>
+    <li>User: <%= session.user_id %></li>
+    <li>Current Page: <%= session.path %></li>
+    <li>Time: <%= session.time %></li>
+  </ul>
+<% end %>
