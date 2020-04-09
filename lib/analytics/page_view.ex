@@ -12,8 +12,8 @@ defmodule Analytics.PageView do
     %__MODULE__{
       user_id: user_id,
       session_id: session_id,
-      starts_at: DateTime.utc_now(),
-      ends_at: DateTime.utc_now(),
+      starts_at: now(),
+      ends_at: now(),
       time: 0,
       path: path
     }
@@ -21,5 +21,9 @@ defmodule Analytics.PageView do
 
   def registry_key(%__MODULE__{user_id: user_id, session_id: session_id}) do
     Integer.to_string(user_id) <> ":" <> session_id
+  end
+
+  defp now() do
+    DateTime.utc_now() |> DateTime.to_iso8601()
   end
 end

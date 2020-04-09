@@ -8,12 +8,12 @@ defmodule Analytics.UserTracker do
   @kill_after 10 * 60 * 1000
 
   def start_link(%PageView{} = state) when is_map_key(state, :session_id) do
-    GenServer.start_link(__MODULE__,  %{page_views: [state]}, name: via_tuple(state))
+    GenServer.start_link(__MODULE__,  %{page_views: [state], kill_ref: nil}, name: via_tuple(state))
   end
 
   def init(state) do
     kill_ref = Process.send_after(self(), :kill, @kill_after)
-    {:ok, Enum.into(state, %{kill_ref: kill_ref})}
+    {:ok, %{state | kill_ref: kill_ref}}
   end
 
   def get_state(tracker) do
@@ -45,7 +45,7 @@ defmodule Analytics.UserTracker do
     pv =
       pv
       |> Map.put(:time, pv.time + 1)
-      |> Map.put(:ends_at, DateTime.utc_now())
+      |> Map.put(:ends_at, DateTime.utc_now() |> DateTime.to_iso8601())
 
     {:noreply, %{state | page_views: [pv | tail]}}
   end
