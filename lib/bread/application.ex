@@ -12,7 +12,8 @@ defmodule Bread.Application do
       Bread.Repo,
       # Start the endpoint when the application starts
       BreadWeb.Endpoint,
-      {Registry, keys: :unique, name: Tracker.Registry}
+      {Registry, keys: :unique, name: Analytics.Registry},
+      {DynamicSupervisor, strategy: :one_for_one, name: Analytics.DynamicSupervisor}
       # Starts a worker by calling: Bread.Worker.start_link(arg)
       # {Bread.Worker, arg},
     ]
