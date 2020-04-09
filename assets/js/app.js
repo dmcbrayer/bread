@@ -31,7 +31,7 @@ let socket = new Socket("/socket", {
 if(window.userToken !== "") {
   socket.connect()
 
-  let channel = socket.channel("room:1", {
+  let channel = socket.channel("analytics:users", {
     path: window.location.pathname,
     sessionId: window.sessionId
   })

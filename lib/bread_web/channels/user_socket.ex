@@ -3,7 +3,7 @@ defmodule BreadWeb.UserSocket do
   require Logger
 
   ## Channels
-  channel "room:*", BreadWeb.RoomChannel
+  channel "analytics:users", BreadWeb.AnalyticsChannel
 
   def connect(%{"token" => token}, socket) do
     case verify(socket, token) do

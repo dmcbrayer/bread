@@ -1,23 +1,24 @@
-defmodule BreadWeb.RoomChannel do
+defmodule BreadWeb.AnalyticsChannel do
   use BreadWeb, :channel
   alias Analytics.{PageView, UserTracker}
 
-  def join("room:" <> room_id, %{"path" => path, "sessionId" => session_id}, socket) do
+  def join("analytics:users", %{"path" => path, "sessionId" => session_id}, socket) do
     user_id = socket.assigns.user_id
     page_view = PageView.new(user_id, session_id, path)
     registry_key = PageView.registry_key(page_view)
 
-    ref = case Registry.lookup(Analytics.Registry, registry_key) do
-      [{ref, _}] -> ref
-      [] ->
-        {:ok, ref} =
-          DynamicSupervisor.start_child(Analytics.DynamicSupervisor, {UserTracker, page_view})
-        ref
-    end
+    ref =
+      case Registry.lookup(Analytics.Registry, registry_key) do
+        [{pid, _}] ->
+          UserTracker.add_page_view(pid, page_view)
+          pid
+        [] ->
+          {:ok, pid} = start_tracker(page_view)
+          pid
+      end
 
     socket =
       socket
-      |> assign(:room_id, String.to_integer(room_id))
       |> assign(:tracker_ref, ref)
 
     Process.send_after(self(), :tick, 1000)
@@ -38,5 +39,9 @@ defmodule BreadWeb.RoomChannel do
     # state = UserTracker.get_state(ref)
     # IO.puts("Dumping user state to disk...")
     # Task.start(fn -> Bread.Dump.dump(state) end)
+  end
+
+  defp start_tracker(%PageView{} = pv) do
+    DynamicSupervisor.start_child(Analytics.DynamicSupervisor, {UserTracker, pv})
   end
 end
