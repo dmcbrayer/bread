@@ -33,14 +33,6 @@ defmodule BreadWeb.AnalyticsChannel do
     {:noreply, socket}
   end
 
-  # Dump the state of the tracking bucket to something
-  # more permanent
-  def terminate(_reason, %{assigns: %{tracker_ref: ref}}) do
-    # state = UserTracker.get_state(ref)
-    # IO.puts("Dumping user state to disk...")
-    # Task.start(fn -> Bread.Dump.dump(state) end)
-  end
-
   defp start_tracker(%PageView{} = pv) do
     DynamicSupervisor.start_child(Analytics.DynamicSupervisor, {UserTracker, pv})
   end

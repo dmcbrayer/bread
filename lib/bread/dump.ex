@@ -1,8 +1,8 @@
 defmodule Bread.Dump do
   @dump_path "./tmp/testing"
 
-  def dump(term) do
+  def dump(term, path \\ @dump_path) do
     bin = term |> :erlang.term_to_binary()
-    File.write!(@dump_path, bin)
+    File.write!(path, bin)
   end
 end

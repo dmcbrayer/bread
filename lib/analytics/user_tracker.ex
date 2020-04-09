@@ -54,6 +54,12 @@ defmodule Analytics.UserTracker do
   end
 
   def handle_info(:kill, state) do
+    name = PageView.registry_key(hd(state.page_views))
+    path = Path.join("tmp", name)
+
+    IO.puts("Dumping user state to disk....")
+    Task.start(fn -> Bread.Dump.dump(state, path) end)
+
     {:stop, :normal, state}
   end
 
