@@ -64,10 +64,11 @@ defmodule BreadWeb.Router do
     end
   end
 
-  @max_age 3600
+  @max_age 600
   defp put_session_id(conn, _) do
-    if conn.req_cookies["_bread_analytics_session_id"] do
+    if session_id = conn.req_cookies["_bread_analytics_session_id"] do
       conn
+      |> put_resp_cookie("_bread_analytics_session_id", session_id, signed: true, max_age: @max_age)
     else
       session_id = SecureRandom.urlsafe_base64()
       conn
