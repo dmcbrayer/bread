@@ -1,9 +1,19 @@
-<h1>These are some active sessions</h1>
+<div class="container content-container my-10">
+  <div class="mx-2 md:mx-0">
+    <h1 class="section-header">Active User Sessions</h1>
 
-<%= for session <- @sessions do %>
-  <ul>
-    <li>User: <%= session.user_id %></li>
-    <li>Current Page: <%= session.path %></li>
-    <li>Time: <%= session.time %></li>
-  </ul>
-<% end %>
+    <div class="flex flex-wrap">
+      <%= for session <- @sessions do %>
+        <div class="m-2 border border-gray-700 rounded p-3">
+          <ul>
+            <li>Status: <%= session.status %>
+            <li>User: <%= session.user_id %></li>
+            <li>Current Page: <%= session.path %></li>
+            <li>Time: <%= session.time %></li>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
