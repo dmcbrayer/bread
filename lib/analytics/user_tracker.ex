@@ -20,6 +20,10 @@ defmodule Analytics.UserTracker do
     GenServer.call(tracker, :get_state)
   end
 
+  def set_idle(tracker) do
+    GenServer.cast(tracker, :set_idle)
+  end
+
   def tick(tracker) do
     GenServer.cast(tracker, :postpone_kill)
     GenServer.cast(tracker, :tick)
@@ -32,6 +36,12 @@ defmodule Analytics.UserTracker do
 
   def handle_call(:get_state, _from, state) do
     {:reply, state, state}
+  end
+
+  def handle_cast(:set_idle, %{page_views: [pv | tail]} = state) do
+    page_views = [Map.put(pv, :status, "idle") | tail]
+
+    {:noreply, %{state | page_views: page_views}}
   end
 
   def handle_cast(:postpone_kill, %{kill_ref: kill_ref} = state) do

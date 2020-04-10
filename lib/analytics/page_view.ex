@@ -5,7 +5,8 @@ defmodule Analytics.PageView do
     starts_at: nil,
     ends_at: nil,
     time: 0,
-    path: nil
+    path: nil,
+    status: nil
   ]
 
   def new(user_id, session_id, path) do
@@ -15,7 +16,8 @@ defmodule Analytics.PageView do
       starts_at: now(),
       ends_at: now(),
       time: 0,
-      path: path
+      path: path,
+      status: "active"
     }
   end
 

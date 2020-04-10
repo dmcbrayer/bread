@@ -2,6 +2,8 @@ defmodule BreadWeb.AnalyticsChannel do
   use BreadWeb, :channel
   alias Analytics.{PageView, UserTracker, RegistryHelper}
 
+  @tick_rate 1000
+
   def join("analytics:users", %{"path" => path, "sessionId" => session_id}, socket) do
     user_id = socket.assigns.user_id
     page_view = PageView.new(user_id, session_id, path)
@@ -17,20 +19,20 @@ defmodule BreadWeb.AnalyticsChannel do
           pid
       end
 
-    schedule_tick()
+    Process.send_after(self(), :tick, @tick_rate)
 
     {:ok, assign(socket, :tracker_ref, ref)}
   end
 
   def handle_info(:tick, %{assigns: %{tracker_ref: ref}} = socket) do
     UserTracker.tick(ref)
-    schedule_tick()
+    Process.send_after(self(), :tick, @tick_rate)
 
     {:noreply, socket}
   end
 
-  defp schedule_tick(timeout \\ 1000) do
-    Process.send_after(self(), :tick, timeout)
+  def terminate(_reason, %{assigns: %{tracker_ref: ref}}) do
+    UserTracker.set_idle(ref)
   end
 
   defp start_tracker(%PageView{} = pv) do
