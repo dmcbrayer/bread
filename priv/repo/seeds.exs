@@ -10,6 +10,8 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+# Create Users
+# ============
 users = [
   %{
     email: "user@mail.com", password: "qwer1234",
@@ -27,3 +29,26 @@ users = [
 ]
 
 Enum.each(users, &Bread.Users.create(&1))
+
+# Create Recipes
+# ==============
+recipes = [
+  %{
+    name: "Breaducation White Sandwich Bread",
+    starter: "none",
+    user_id: 3,
+    ingredients: [
+      %{amount: 100, name: "Bread Flour"},
+      %{amount: 63, name: "Water"},
+      %{amount: 4, name: "Honey"},
+      %{amount: 6, name: "Oil"},
+      %{amount: 2, name: "Salt"},
+      %{amount: 2, name: "Yeast"}
+    ],
+    recipe_steps: [
+      %{body: "Make the bread", order: 0}
+    ]
+  }
+]
+
+Enum.each(recipes, &Bread.Recipes.create_recipe(&1))
