@@ -91,7 +91,7 @@ defmodule BreadWeb.Router do
     else
       conn
       |> put_flash(:error, "You cannot access that page")
-      |> redirect(to: Routes.page_path(conn, :index))
+      |> redirect(to: BreadWeb.Router.Helpers.page_path(conn, :index))
       |> halt()
     end
   end
