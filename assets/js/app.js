@@ -6,7 +6,13 @@ import css from "../css/app.css"
 import "phoenix_html"
 import {Socket} from "phoenix"
 import LiveSocket from "phoenix_live_view"
-import "@fortawesome/fontawesome-free/js/all";
+
+import { faPlus, faPercent, faBalanceScale, faBreadSlice } from '@fortawesome/free-solid-svg-icons'
+import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+import { library, dom } from '@fortawesome/fontawesome-svg-core'
+library.add(faPlus, faPercent, faBalanceScale, faBreadSlice, faEdit, faTrashAlt)
+
+dom.watch()
 
 // Import local files
 //
