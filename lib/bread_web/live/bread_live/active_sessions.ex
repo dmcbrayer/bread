@@ -19,16 +19,19 @@ defmodule BreadWeb.BreadLive.ActiveSessions do
 
   defp fetch_sessions() do
     RegistryHelper.list_and_get()
-    |> Enum.map(fn pid ->
-      pid
-      |> UserTracker.get_state()
-      |> Map.get(:page_views)
-      |> hd()
-    end)
+    |> Enum.map(&get_current_page_view(&1))
+    |> Enum.sort_by(&(&1.time), :desc)
   end
 
+  @refresh_time 500
   defp schedule_refresh() do
-    Process.send_after(self(), :refresh, 500)
+    Process.send_after(self(), :refresh, @refresh_time)
   end
 
+  defp get_current_page_view(pid) do
+    pid
+    |> UserTracker.get_state()
+    |> Map.get(:page_views)
+    |> hd()
+  end
 end

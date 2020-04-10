@@ -56,6 +56,7 @@ defmodule Analytics.UserTracker do
       pv
       |> Map.put(:time, pv.time + 1)
       |> Map.put(:ends_at, DateTime.utc_now() |> DateTime.to_iso8601())
+      |> Map.put(:status, "active")
 
     {:noreply, %{state | page_views: [pv | tail]}}
   end
