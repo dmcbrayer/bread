@@ -66,7 +66,7 @@ ALTER SEQUENCE public.bakes_id_seq OWNED BY public.bakes.id;
 CREATE TABLE public.ingredients (
     id bigint NOT NULL,
     name character varying(255),
-    amount integer,
+    amount double precision,
     recipe_id bigint,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
@@ -356,5 +356,5 @@ ALTER TABLE ONLY public.recipes
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015);
+INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015), (20200410205353);
 

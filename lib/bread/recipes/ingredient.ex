@@ -4,7 +4,7 @@ defmodule Bread.Recipes.Ingredient do
   alias Bread.Recipes.Recipe
 
   schema "ingredients" do
-    field :amount, :integer
+    field :amount, :float
     field :name, :string
     belongs_to :recipe, Recipe
 
