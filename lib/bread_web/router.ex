@@ -23,6 +23,10 @@ defmodule BreadWeb.Router do
       error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
+  pipeline :admin_only do
+    plug :authorize_admin
+  end
+
   scope "/", BreadWeb do
     pipe_through :browser
 
@@ -36,7 +40,12 @@ defmodule BreadWeb.Router do
       resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
 
       live "/recipes/:id/edit", BreadLive.EditRecipeForm, session: {__MODULE__, :with_current_user, []}
-      # live "/recipes/:id/bake", BreadLive.BakeRecipe, session: {__MODULE__, :with_current_user, []}
+    end
+
+    scope "/admin" do
+      pipe_through [:protected, :admin_only]
+
+      get "/dashboard", DashboardController, :show
     end
   end
 
@@ -73,6 +82,17 @@ defmodule BreadWeb.Router do
       session_id = SecureRandom.urlsafe_base64()
       conn
       |> put_resp_cookie("_bread_analytics_session_id", session_id, signed: true, max_age: @max_age)
+    end
+  end
+
+  def authorize_admin(conn, _opts) do
+    if Pow.Plug.current_user(conn).is_admin do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You cannot access that page")
+      |> redirect(to: Routes.page_path(conn, :index))
+      |> halt()
     end
   end
 end
