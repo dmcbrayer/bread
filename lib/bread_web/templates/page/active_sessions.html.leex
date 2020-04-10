@@ -1,17 +1,36 @@
 <div class="container content-container my-10">
   <div class="mx-2 md:mx-0">
-    <h1 class="section-header">Active User Sessions</h1>
+    <h1 class="section-header mb-6">Active User Sessions</h1>
 
     <div class="flex flex-wrap">
       <%= for session <- @sessions do %>
-        <div class="m-2 border border-gray-700 rounded p-3">
-          <ul>
-            <li>Status: <%= session.status %>
-            <li>User: <%= session.user_id %></li>
-            <li>Current Page: <%= session.path %></li>
-            <li>Time: <%= session.time %></li>
-          </ul>
-        </div>
+        <%= if session.status == "active" do %>
+          <div class="mr-2 mb-2 border-2 w-full md:w-1/4 border-green-400 rounded">
+            <div class="bg-green-200 py-2 px-3 flex justify-between items-center">
+              <h3 class="text-lg font-bold">User <%= session.user_id %></h3>
+              <div>
+                <span class="rounded-full py-1 px-2"><%= session.status %></span>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4>Path: <%= session.path %></h4>
+              <h4>Time: <%= session.time %></h4>
+            </div>
+          </div>
+        <% else %>
+          <div class="mr-2 mb-2 border-2 w-full md:w-1/4 border-gray-400 rounded">
+            <div class="bg-gray-200 py-2 px-3 flex justify-between items-center">
+              <h3 class="text-lg font-bold">User <%= session.user_id %></h3>
+              <div>
+                <span class="rounded-full py-1 px-2"><%= session.status %></span>
+              </div>
+            </div>
+            <div class="p-3">
+              <h4>Path: <%= session.path %></h4>
+              <h4>Time: <%= session.time %></h4>
+            </div>
+          </div>
+        <% end %>
       <% end %>
     </div>
   </div>
