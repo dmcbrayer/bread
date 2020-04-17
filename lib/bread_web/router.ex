@@ -9,7 +9,7 @@ defmodule BreadWeb.Router do
     plug :fetch_live_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :put_live_layout, {BreadWeb.LayoutView, "app.html"}
+    plug :put_root_layout, {BreadWeb.LayoutView, :root}
     plug :put_user_token
     plug :put_session_id
   end
