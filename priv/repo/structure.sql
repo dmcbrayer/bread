@@ -69,7 +69,9 @@ CREATE TABLE public.ingredients (
     amount double precision,
     recipe_id bigint,
     inserted_at timestamp(0) without time zone NOT NULL,
-    updated_at timestamp(0) without time zone NOT NULL
+    updated_at timestamp(0) without time zone NOT NULL,
+    starter bigint,
+    type character varying(255)
 );
 
 
@@ -169,6 +171,38 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: starters; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.starters (
+    id bigint NOT NULL,
+    name character varying(255),
+    "user" bigint,
+    inserted_at timestamp(0) without time zone NOT NULL,
+    updated_at timestamp(0) without time zone NOT NULL
+);
+
+
+--
+-- Name: starters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.starters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: starters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.starters_id_seq OWNED BY public.starters.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -231,6 +265,13 @@ ALTER TABLE ONLY public.recipes ALTER COLUMN id SET DEFAULT nextval('public.reci
 
 
 --
+-- Name: starters id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.starters ALTER COLUMN id SET DEFAULT nextval('public.starters_id_seq'::regclass);
+
+
+--
 -- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -278,6 +319,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: starters starters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.starters
+    ADD CONSTRAINT starters_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -300,6 +349,13 @@ CREATE INDEX ingredients_recipe_id_index ON public.ingredients USING btree (reci
 
 
 --
+-- Name: ingredients_starter_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX ingredients_starter_index ON public.ingredients USING btree (starter);
+
+
+--
 -- Name: recipe_steps_recipe_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -311,6 +367,13 @@ CREATE INDEX recipe_steps_recipe_id_index ON public.recipe_steps USING btree (re
 --
 
 CREATE INDEX recipes_user_id_index ON public.recipes USING btree (user_id);
+
+
+--
+-- Name: starters_user_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX starters_user_index ON public.starters USING btree ("user");
 
 
 --
@@ -337,6 +400,14 @@ ALTER TABLE ONLY public.ingredients
 
 
 --
+-- Name: ingredients ingredients_starter_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ingredients
+    ADD CONSTRAINT ingredients_starter_fkey FOREIGN KEY (starter) REFERENCES public.starters(id) ON DELETE CASCADE;
+
+
+--
 -- Name: recipe_steps recipe_steps_recipe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -353,8 +424,16 @@ ALTER TABLE ONLY public.recipes
 
 
 --
+-- Name: starters starters_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.starters
+    ADD CONSTRAINT starters_user_fkey FOREIGN KEY ("user") REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015), (20200410205353);
+INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015), (20200410205353), (20200410224032), (20200417023356);
 
