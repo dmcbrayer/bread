@@ -2,6 +2,7 @@ defmodule BreadWeb.Router do
   use BreadWeb, :router
   use Pow.Phoenix.Router
   import Phoenix.LiveView.Router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -46,6 +47,7 @@ defmodule BreadWeb.Router do
       pipe_through [:protected, :admin_only]
 
       get "/dashboard", DashboardController, :show
+      live_dashboard "/phx_dashboard", metrics: BreadWeb.Telemetry
     end
   end
 

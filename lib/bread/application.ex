@@ -11,6 +11,7 @@ defmodule Bread.Application do
       # Start the Ecto repository
       Bread.Repo,
       # Start the endpoint when the application starts
+      BreadWeb.Telemetry,
       BreadWeb.Endpoint,
       {Registry, keys: :unique, name: Analytics.Registry},
       {DynamicSupervisor, strategy: :one_for_one, name: Analytics.DynamicSupervisor}

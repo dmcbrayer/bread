@@ -47,7 +47,10 @@ defmodule Bread.MixProject do
       {:floki, ">= 0.0.0", only: :test},
       {:pow, "~> 1.0.18"},
       {:observer_cli, "~> 1.5"},
-      {:timex, "~> 3.6"}
+      {:timex, "~> 3.6"},
+      {:phoenix_live_dashboard, "~> 0.1"},
+      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_metrics, "~> 0.4"}
     ]
   end
 
