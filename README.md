@@ -11,6 +11,9 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
+## Other Resources
+  * https://www.kingarthurflour.com/pro/reference/bakers-percentage
+
 ## Droplet Setup
   * https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-18-04
   * https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04
