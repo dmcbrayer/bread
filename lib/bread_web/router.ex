@@ -36,11 +36,9 @@ defmodule BreadWeb.Router do
     scope "/" do
       pipe_through :protected
 
-      live "/form", BreadLive.RecipeForm, session: {__MODULE__, :with_current_user, []}
-
+      live "/recipes/new", BreadLive.RecipeForm.New, session: {__MODULE__, :with_current_user, []}
       resources "/recipes", RecipeController, except: [:new, :create, :edit, :update]
-
-      live "/recipes/:id/edit", BreadLive.EditRecipeForm, session: {__MODULE__, :with_current_user, []}
+      live "/recipes/:id/edit", BreadLive.RecipeForm.Edit, session: {__MODULE__, :with_current_user, []}
     end
 
     scope "/admin" do

@@ -2,7 +2,7 @@
   <div class="pb-3 px-2 border-b-4 border-gray-800 flex justify-between items-baseline">
     <h1 class="page-header"><%= @recipe.name %></h1>
     <div>
-      <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.EditRecipeForm, @recipe.id), class: "text-yellow-600 hover:text-yellow-700" do %>
+      <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm.Edit, @recipe.id), class: "text-yellow-600 hover:text-yellow-700" do %>
         <i class="far fa-edit mr-1"></i> Edit
       <% end %>
       <%= link to: Routes.recipe_path(@conn, :delete, @recipe), method: :delete, data: [confirm: "Are you sure?"], class: "ml-5 text-yellow-600 hover:text-yellow-700" do %>

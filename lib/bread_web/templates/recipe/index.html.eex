@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold">Your Recipes</h1>
 
     <div class="my-2">
-      <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm), class: "inline-block text-sm px-3 py-2 leading-none border rounded text-yellow-700 border-yellow-800 hover:border-transparent hover:text-white hover:bg-yellow-800 mt-4 md:mt-0" do %>
+      <%= link to: Routes.live_path(@conn, BreadWeb.BreadLive.RecipeForm.New), class: "inline-block text-sm px-3 py-2 leading-none border rounded text-yellow-700 border-yellow-800 hover:border-transparent hover:text-white hover:bg-yellow-800 mt-4 md:mt-0" do %>
         <span class="fas fa-plus mr-1"></span> New Recipe
       <% end %>
     </div>

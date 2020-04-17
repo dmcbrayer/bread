@@ -1,4 +1,4 @@
-defmodule BreadWeb.BreadLive.RecipeForm do
+defmodule BreadWeb.BreadLive.RecipeForm.New do
   use Phoenix.LiveView, layout: {BreadWeb.LayoutView, "live.html"}
   alias BreadWeb.Router.Helpers, as: Routes
   alias Bread.Recipes
