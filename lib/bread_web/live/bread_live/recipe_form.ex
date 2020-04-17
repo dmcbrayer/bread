@@ -4,9 +4,10 @@ defmodule BreadWeb.BreadLive.RecipeForm do
   alias Bread.Recipes
   alias Bread.Recipes.{Recipe,Ingredient,RecipeStep}
 
+  @start_ingredients [%{name: "Flour", amount: 100.0}, %{name: "Water", amount: 0.0}, %{name: "Yeast", amount: 0.0}]
   def mount(_params, %{"current_user" => current_user}, socket) do
     changeset =
-      Recipes.change_recipe(%Recipe{}, %{ingredients: [%{}], recipe_steps: [%{}]})
+      Recipes.change_recipe(%Recipe{starter: "none"}, %{ingredients: @start_ingredients, recipe_steps: [%{}]})
 
     {:ok, assign(socket, changeset: changeset, current_user: current_user)}
   end
