@@ -19,7 +19,7 @@ defmodule Bread.Recipes.Recipe do
   def changeset(recipe, attrs) do
     recipe
     |> cast(attrs, [:name, :starter, :user_id])
-    |> validate_required([:name, :starter])
+    |> validate_required([:name])
     |> validate_inclusion(:starter, @starters)
     |> cast_assoc(:ingredients, with: &Ingredient.changeset/2)
 

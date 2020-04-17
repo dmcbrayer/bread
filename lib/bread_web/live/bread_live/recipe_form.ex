@@ -4,7 +4,7 @@ defmodule BreadWeb.BreadLive.RecipeForm do
   alias Bread.Recipes
   alias Bread.Recipes.{Recipe,Ingredient,RecipeStep}
 
-  @start_ingredients [%{name: "Flour", amount: 100.0}, %{name: "Water", amount: 0.0}, %{name: "Yeast", amount: 0.0}]
+  @start_ingredients [%{name: "Flour", amount: 100.0, type: "flour"}, %{name: "Water", amount: 0.0, type: "water"}, %{name: "Yeast", amount: 0.0, type: "yeast"}]
   def mount(_params, %{"current_user" => current_user}, socket) do
     changeset =
       Recipes.change_recipe(%Recipe{starter: "none"}, %{ingredients: @start_ingredients, recipe_steps: [%{}]})
@@ -51,7 +51,7 @@ defmodule BreadWeb.BreadLive.RecipeForm do
     ingredients =
       changeset
       |> Ecto.Changeset.fetch_field!(:ingredients)
-      |> Kernel.++([%Ingredient{}])
+      |> Kernel.++([%Ingredient{type: "other"}])
 
     changeset =
       changeset
