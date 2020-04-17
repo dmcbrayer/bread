@@ -44,8 +44,8 @@ defmodule BreadWeb.Router do
     scope "/admin" do
       pipe_through [:protected, :admin_only]
 
-      get "/dashboard", DashboardController, :show
-      live_dashboard "/phx_dashboard", metrics: BreadWeb.Telemetry
+      get "/", DashboardController, :show
+      live_dashboard "/dashboard", metrics: BreadWeb.Telemetry
     end
   end
 
