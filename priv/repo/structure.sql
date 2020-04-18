@@ -70,7 +70,7 @@ CREATE TABLE public.ingredients (
     recipe_id bigint,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL,
-    starter bigint,
+    starter_id bigint,
     type character varying(255)
 );
 
@@ -177,7 +177,7 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.starters (
     id bigint NOT NULL,
     name character varying(255),
-    "user" bigint,
+    user_id bigint,
     inserted_at timestamp(0) without time zone NOT NULL,
     updated_at timestamp(0) without time zone NOT NULL
 );
@@ -349,10 +349,10 @@ CREATE INDEX ingredients_recipe_id_index ON public.ingredients USING btree (reci
 
 
 --
--- Name: ingredients_starter_index; Type: INDEX; Schema: public; Owner: -
+-- Name: ingredients_starter_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX ingredients_starter_index ON public.ingredients USING btree (starter);
+CREATE INDEX ingredients_starter_id_index ON public.ingredients USING btree (starter_id);
 
 
 --
@@ -370,10 +370,10 @@ CREATE INDEX recipes_user_id_index ON public.recipes USING btree (user_id);
 
 
 --
--- Name: starters_user_index; Type: INDEX; Schema: public; Owner: -
+-- Name: starters_user_id_index; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX starters_user_index ON public.starters USING btree ("user");
+CREATE INDEX starters_user_id_index ON public.starters USING btree (user_id);
 
 
 --
@@ -400,11 +400,11 @@ ALTER TABLE ONLY public.ingredients
 
 
 --
--- Name: ingredients ingredients_starter_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ingredients ingredients_starter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ingredients
-    ADD CONSTRAINT ingredients_starter_fkey FOREIGN KEY (starter) REFERENCES public.starters(id) ON DELETE CASCADE;
+    ADD CONSTRAINT ingredients_starter_id_fkey FOREIGN KEY (starter_id) REFERENCES public.starters(id) ON DELETE CASCADE;
 
 
 --
@@ -424,16 +424,16 @@ ALTER TABLE ONLY public.recipes
 
 
 --
--- Name: starters starters_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: starters starters_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.starters
-    ADD CONSTRAINT starters_user_fkey FOREIGN KEY ("user") REFERENCES public.users(id) ON DELETE CASCADE;
+    ADD CONSTRAINT starters_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
 
 
 --
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015), (20200410205353), (20200410224032), (20200417023356);
+INSERT INTO public."schema_migrations" (version) VALUES (20200308214259), (20200309211004), (20200309211047), (20200309211118), (20200315215015), (20200410205353), (20200410224032);
 
