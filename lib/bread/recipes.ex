@@ -6,7 +6,7 @@ defmodule Bread.Recipes do
   import Ecto.Query, warn: false
   alias Bread.Repo
 
-  alias Bread.Recipes.Recipe
+  alias Bread.Recipes.{Recipe,Starter,Ingredient,RecipeStep}
   alias Bread.Recipes.RecipeQueries
 
   @doc """
@@ -115,8 +115,6 @@ defmodule Bread.Recipes do
     Recipe.changeset(recipe, attrs)
   end
 
-  alias Bread.Recipes.Ingredient
-
   @doc """
   Returns the list of ingredients.
 
@@ -211,8 +209,6 @@ defmodule Bread.Recipes do
     Ingredient.changeset(ingredient, %{})
   end
 
-  alias Bread.Recipes.RecipeStep
-
   @doc """
   Returns the list of recipe_steps.
 
@@ -306,4 +302,111 @@ defmodule Bread.Recipes do
   def change_recipe_step(%RecipeStep{} = recipe_step) do
     RecipeStep.changeset(recipe_step, %{})
   end
+
+  @doc """
+  Returns the list of starters.
+
+  ## Examples
+
+      iex> list_starters()
+      [%Starter{}, ...]
+
+  """
+  def list_starters do
+    Starter
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  def list_user_starters(user) do
+    Starter
+    |> RecipeQueries.by_user(user)
+    |> order_by(desc: :inserted_at)
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single starter.
+
+  Raises `Ecto.NoResultsError` if the Starter does not exist.
+
+  ## Examples
+
+      iex> get_starter!(123)
+      %Starter{}
+
+      iex> get_starter!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_starter!(id) do
+    Repo.get!(Starter, id)
+    |> Repo.preload([:ingredients])
+  end
+
+  @doc """
+  Creates a starter.
+
+  ## Examples
+
+      iex> create_starter(%{field: value})
+      {:ok, %Starter{}}
+
+      iex> create_starter(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_starter(attrs \\ %{}) do
+    %Starter{}
+    |> Starter.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a starter.
+
+  ## Examples
+
+      iex> update_starter(starter, %{field: new_value})
+      {:ok, %Recipe{}}
+
+      iex> update_starter(starter, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_starter(%Starter{} = starter, attrs) do
+    starter
+    |> Starter.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a starter.
+
+  ## Examples
+
+      iex> delete_starter(starter)
+      {:ok, %Starter{}}
+
+      iex> delete_starter(starter)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_starter(%Starter{} = starter) do
+    Repo.delete(starter)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking starter changes.
+
+  ## Examples
+
+      iex> change_starter(starter)
+      %Ecto.Changeset{source: %Starter{}}
+
+  """
+  def change_starter(%Starter{} = starter, attrs \\ %{}) do
+    Starter.changeset(starter, attrs)
+  end
+
 end

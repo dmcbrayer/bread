@@ -52,3 +52,29 @@ recipes = [
 ]
 
 Enum.each(recipes, &Bread.Recipes.create_recipe(&1))
+
+# Create Starters
+# ===============
+starters = [
+  %{
+    name: "Poolish",
+    user_id: 3,
+    ingredients: [
+      %{amount: 100, name: "Flour", type: "flour"},
+      %{amount: 100, name: "Water", type: "water"},
+      %{amount: 0.1, name: "Instant Dry Yeast", type: "yeast"}
+    ]
+  },
+  %{
+    name: "Pate Fermentee",
+    user_id: 3,
+    ingredients: [
+      %{amount: 100, name: "Flour", type: "flour"},
+      %{amount: 66.67, name: "Water", type: "water"},
+      %{amount: 0.67, name: "Instant Dry Yeast", type: "yeast"},
+      %{amount: 2, name: "Salt", type: "other"}
+    ]
+  }
+]
+
+Enum.each(starters, &Bread.Recipes.create_starter(&1))
