@@ -17,6 +17,10 @@ defmodule Bread.Users do
     |> Repo.all()
   end
 
+  def get_user!(id) do
+    Repo.get!(User, id)
+  end
+
   def create(params) do
     pow_create(params)
   end
